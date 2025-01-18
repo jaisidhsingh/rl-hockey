@@ -97,7 +97,7 @@ class TD3:
         # Initialize actors
         self.actor = Actor(state_dim, action_dim, max_action).to(device)
         self.actor_target = deepcopy(self.actor)
-        self.actor_optimizer = optim.Adam(self.actor.parameters(), lr=3e-4)
+        self.actor_optimizer = optim.Adam(self.actor.parameters(), lr=1e-3)
         
         # Initialize critics
         self.critic = Critic(state_dim, action_dim).to(device)
@@ -305,7 +305,7 @@ def main():
     replay_buffer = ReplayBuffer()
     
     # Training parameters
-    max_timesteps = 1_00_000
+    max_timesteps = 1_000_000
     batch_size = 256
     warmup_steps = 25_000
     eval_freq = 5000  # Evaluate every 5000 steps

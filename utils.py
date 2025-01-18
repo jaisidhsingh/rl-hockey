@@ -78,3 +78,6 @@ def setup_td3_args():
     parser.add_argument("--num-eval-episodes", type=int, default=10)
     parser.add_argument("--max-episode-length", type=int, default=1000)
     parser.add_argument("--total-buffer-size", type=int, default=1000000)
+
+    args = parser.parse_args()
+    return args

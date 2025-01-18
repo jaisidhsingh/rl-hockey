@@ -1,16 +1,19 @@
 import os
 import torch
 import numpy as np
+from copy import deepcopy
 import torch.nn.functional as F
+from hockey.hockey_env import HockeyEnv, HockeyEnv_BasicOpponent
 
 from actor_critic import *
 from utils import ReplayBuffer, setup_td3_args
 
 
 class TD3(object):
-    def __init__(self, args, env, main_ac, tgt_ac):
+    def __init__(self, args, env, eval_env, main_ac, tgt_ac):
         self.args = args
         self.env = env
+        self.eval_env = eval_env
         self.main_ac = main_ac
         self.tgt_ac = tgt_ac
 
@@ -73,7 +76,9 @@ class TD3(object):
 
     
     def update_td3_agent(self, batch, t):
+        self.main_ac.train()
         self.Q_optimizer.zero_grad()
+        
         Q_loss, loss_log = self.Qs_loss(batch)
         Q_loss.backward()
 
@@ -95,6 +100,8 @@ class TD3(object):
     
 
     def test_td3_agent(self):
+        self.main_ac.eval()
+
         eval_returns = 0
         eval_time_alive = 0
 
@@ -125,7 +132,7 @@ class TD3(object):
         torch.manual_seed(self.args.random_seed)
         np.random_seed(self.args.random_seed)
 
-        buffer = ReplayBuffer()
+        buffer = ReplayBuffer(self.args.total_buffer_size, self.state_dim, self.action_dim, self.args.device)
 
         total_steps = self.args.per_epoch_steps * self.args.num_epochs
         state = self.env.reset()
@@ -143,9 +150,7 @@ class TD3(object):
             episode_length += 1
 
             done = False if episode_length == self.args.max_episode_length else done
-
             buffer.push(state, action, reward, next_state, done)
-
             state = next_state
 
             if done or (episode_length == self.args.max_episode_length):
@@ -169,5 +174,10 @@ class TD3(object):
             
 if __name__ == "__main__":
     args = setup_td3_args()
-    td3_agent = TD3(args)
+    env = HockeyEnv()
+    eval_env = HockeyEnv_BasicOpponent()
+    main_ac = ActorCritic(args, env)
+    tgt_ac = deepcopy(main_ac)
+
+    td3_agent = TD3(args, env, eval_env, main_ac, tgt_ac)
     td3_agent.run_td3()

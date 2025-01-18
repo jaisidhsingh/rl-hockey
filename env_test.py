@@ -25,3 +25,5 @@ def first_look():
             break
     
     env.close()
+
+first_look()

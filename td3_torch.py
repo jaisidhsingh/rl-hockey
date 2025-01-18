@@ -1,5 +1,7 @@
 import os
+import wandb
 import torch
+import itertools
 import numpy as np
 from copy import deepcopy
 import torch.nn.functional as F
@@ -23,15 +25,24 @@ class TD3(object):
 
         for p in tgt_ac.parameters():
             p.requires_grad = False
+        
+        self.policy_optimizer = torch.optim.Adam(main_ac.policy.parameters(), lr=args.policy_learning_rate)
+        self.Q_params = itertools.chain(main_ac.Q_function_1.parameters(), main_ac.Q_function_2.parameters())
+        self.Q_optimizer = torch.optim.Adam(self.Q_params, lr=args.Q_learning_rate)
+
+        wandb.init(project="rl-hockey-td3", config=vars(self.args), name=self.args.experiment_name)
 
 
-    def get_action_main(self, state):
-        action = self.main_ac(state) + self.args.noise_scale * torch.randn(self.action_dim)
+    def get_action_main(self, state, testing=False):
+        if not testing:
+            action = self.main_ac(state) + self.args.noise_scale * torch.randn(self.action_dim).float().to(self.args.device)
+        else:
+            action = self.main_ac(state)
         return action.clamp(-self.action_limit, self.action_limit)
 
     
-    def get_action_tgt(self, state):
-        action = self.tgt_ac(state) + self.args.noise_scale * torch.randn(self.action_dim)
+    def get_action_tgt(self, state, ):
+        action = self.tgt_ac(state) + self.args.noise_scale * torch.randn(self.action_dim).float().to(self.args.device)
         return action.clamp(-self.action_limit, self.action_limit)
 
 
@@ -63,11 +74,11 @@ class TD3(object):
 
             Q1_tgt_policy = self.tgt_ac.Q1(ns, next_action)
             Q2_tgt_policy = self.tgt_ac.Q2(ns, next_action)
-            Q_final_tgt_policy = torch.min(Q1_tgt_policy, Q2_tgt_policy)
-            return_value = r + self.args.gamma * (1 - d) * Q_final_tgt_policy
+            Q_final_tgt_policy = torch.minimum(Q1_tgt_policy, Q2_tgt_policy)
+            return_value = r.unsqueeze(-1) + self.args.gamma * (1 - d.unsqueeze(-1)) * Q_final_tgt_policy
 
-        Q1_loss = F.mse(q1, return_value)
-        Q2_loss = F.mse(q2, return_value)
+        Q1_loss = F.mse_loss(q1, return_value)
+        Q2_loss = F.mse_loss(q2, return_value)
         Q_loss = Q1_loss + Q2_loss
 
         loss_log = {"Q1_loss": Q1_loss.item(), "Q2_loss": Q2_loss.item()}
@@ -77,17 +88,21 @@ class TD3(object):
     
     def update_td3_agent(self, batch, t):
         self.main_ac.train()
+
         self.Q_optimizer.zero_grad()
-        
         Q_loss, loss_log = self.Qs_loss(batch)
         Q_loss.backward()
+        self.Q_optimizer.step()
+
+        policy_loss_value = 0
 
         if t % self.args.policy_delay == 0:
             for p in self.Q_params:
                 p.requires_grad = False
             
             self.policy_optimizer.zero_grad()
-            loss_policy = self.policy_loss(batch)
+            loss_policy = self.policy_loss(batch["state"])
+            policy_loss_value = loss_policy.item()
             loss_policy.backward()
             self.policy_optimizer.step()
 
@@ -96,9 +111,15 @@ class TD3(object):
             
             with torch.no_grad():
                 for p, p_ in zip(self.main_ac.parameters(), self.tgt_ac.parameters()):
-                    p_.data = p_.data * self.args.rho + p_.data + (1 - self.args.rho) * p.data
-    
+                    p_.data.mul_(self.args.rho)
+                    p_.data.add_((1 - self.args.rho) * p.data)
+                        
+        loss_log.update({"policy_loss": policy_loss_value})
+        # print(f"Time: {t} -- {loss_log}")
+        wandb.log(loss_log, step=t)
 
+
+    @torch.no_grad()
     def test_td3_agent(self):
         self.main_ac.eval()
 
@@ -106,13 +127,14 @@ class TD3(object):
         eval_time_alive = 0
 
         for j in range(self.args.num_eval_episodes):
-            state = self.eval_env.reset()
+            state, _ = self.eval_env.reset()
             done = False
             episode_return = 0
             episode_length = 0
 
             while done == False and episode_length != self.args.max_episode_length:
-                state, reward, done, _ = self.eval_env.step(self.get_action_main(state))
+                state = torch.from_numpy(state).float().to(self.args.device)
+                state, reward, done, _, __ = self.eval_env.step(self.get_action_main(state, testing=True).cpu().numpy())
                 episode_return += reward
                 episode_length += 1
             
@@ -121,6 +143,11 @@ class TD3(object):
         
         eval_returns /= self.args.num_eval_episodes
         eval_time_alive /= self.args.num_eval_episodes
+        eval_log = {
+            "eval_avg_return": eval_returns,
+            "eval_avg_episode_length": eval_time_alive
+        }
+        return eval_log
     
 
     def save_checkpoint(self, dump):
@@ -130,22 +157,27 @@ class TD3(object):
 
     def run_td3(self):
         torch.manual_seed(self.args.random_seed)
-        np.random_seed(self.args.random_seed)
+        np.random.seed(self.args.random_seed)
+
+        os.makedirs(self.args.results_folder, exist_ok=True)
+        os.makedirs(self.args.checkpoint_folder, exist_ok=True)
 
         buffer = ReplayBuffer(self.args.total_buffer_size, self.state_dim, self.action_dim, self.args.device)
 
         total_steps = self.args.per_epoch_steps * self.args.num_epochs
-        state = self.env.reset()
+        state, _ = self.env.reset()
         episode_return = 0
         episode_length = 0
 
         for t in range(total_steps):
             if t > self.args.start_steps:
-                action = self.get_action_main(state)
+                state = torch.from_numpy(state).float().to(self.args.device)
+                action = self.get_action_main(state).detach().cpu().numpy()
+                state = state.detach().cpu().numpy()
             else:
                 action = self.env.action_space.sample()
             
-            next_state, reward, done, _ = self.env.step(action)
+            next_state, reward, done, _, __ = self.env.step(action)
             episode_return += reward
             episode_length += 1
 
@@ -154,7 +186,7 @@ class TD3(object):
             state = next_state
 
             if done or (episode_length == self.args.max_episode_length):
-                state = self.env.reset()
+                state, _ = self.env.reset()
                 episode_return = 0
                 episode_length = 0
             
@@ -169,14 +201,17 @@ class TD3(object):
                 if epoch % self.args.save_every == 0:
                     self.save_checkpoint({"agent": self, "env": self.env, "epoch": epoch})
                 
-                self.test_td3_agent()
+                eval_log = self.test_td3_agent()
+                eval_log.update({"epoch": epoch})
+                # print(f"Time: {t} -- {eval_log}")
+                wandb.log(eval_log, step=t)
 
             
 if __name__ == "__main__":
     args = setup_td3_args()
-    env = HockeyEnv()
+    env = HockeyEnv_BasicOpponent()
     eval_env = HockeyEnv_BasicOpponent()
-    main_ac = ActorCritic(args, env)
+    main_ac = ActorCritic(args, env).to(args.device)
     tgt_ac = deepcopy(main_ac)
 
     td3_agent = TD3(args, env, eval_env, main_ac, tgt_ac)

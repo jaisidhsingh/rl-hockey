@@ -1,3 +1,4 @@
+import wandb
 import gymnasium as gym
 import numpy as np
 import torch
@@ -89,7 +90,7 @@ class TD3:
         discount=0.99,
         tau=0.005,
         policy_noise=0.2,
-        noise_clip=0.5,
+        noise_clip=0.2,
         policy_freq=2
     ):
         self.device = device
@@ -97,7 +98,7 @@ class TD3:
         # Initialize actors
         self.actor = Actor(state_dim, action_dim, max_action).to(device)
         self.actor_target = deepcopy(self.actor)
-        self.actor_optimizer = optim.Adam(self.actor.parameters(), lr=1e-3)
+        self.actor_optimizer = optim.Adam(self.actor.parameters(), lr=3e-4)
         
         # Initialize critics
         self.critic = Critic(state_dim, action_dim).to(device)
@@ -244,7 +245,7 @@ class TD3:
 #     main()
 # [Previous Actor, Critic, ReplayBuffer, and TD3 classes remain exactly the same...]
 
-def evaluate_policy(policy, eval_env, eval_episodes=10, render=False):
+def evaluate_policy(policy, eval_env, t, eval_episodes=10, render=False):
     """
     Runs policy for X episodes and returns average reward.
     A fixed seed is used for the eval environment.
@@ -272,12 +273,14 @@ def evaluate_policy(policy, eval_env, eval_episodes=10, render=False):
     avg_reward = avg_reward / eval_episodes
     std_reward = np.std(all_rewards)
     
-    print("---------------------------------------")
-    print(f"Evaluation over {eval_episodes} episodes:")
-    print(f"Average Reward: {avg_reward:.3f} ± {std_reward:.3f}")
-    print("---------------------------------------")
-    
+    # print("---------------------------------------")
+    # print(f"Evaluation over {eval_episodes} episodes:")
+    # print(f"Average Reward: {avg_reward:.3f} ± {std_reward:.3f}")
+    # print("---------------------------------------")
+
+    wandb.log({"mean_reward": avg_reward, "std_reward": std_reward}, step=t)    
     return avg_reward, std_reward
+
 
 def main():
     # Environment setup
@@ -291,9 +294,9 @@ def main():
     max_action = float(env.action_space.high[0])
 
     # Set seeds
-    seed = 0
+    seed = 123456
     env.reset(seed=seed)
-    eval_env.reset(seed=seed+1)  # Different seed for eval env
+    eval_env.reset(seed=seed)  # Different seed for eval env
     torch.manual_seed(seed)
     np.random.seed(seed)
     
@@ -305,14 +308,15 @@ def main():
     replay_buffer = ReplayBuffer()
     
     # Training parameters
-    max_timesteps = 1_000_000
-    batch_size = 256
+    max_timesteps = 2_000_000
+    batch_size = 32
     warmup_steps = 25_000
     eval_freq = 5000  # Evaluate every 5000 steps
     episode_reward = 0
     episode_timesteps = 0
     episode_num = 0
 
+    wandb.init(project="rl-hockey-td3", config={}, name="other_2M")
     state, _ = env.reset()
     done = False
     
@@ -345,13 +349,15 @@ def main():
 
         # Evaluate episode
         if (t + 1) % eval_freq == 0:
-            print(f"\nTimeStep: {t+1}")
-            avg_reward, std_reward = evaluate_policy(td3, eval_env)
+            # print(f"\nTimeStep: {t+1}")
+            avg_reward, std_reward = evaluate_policy(td3, eval_env, t)
             eval_rewards.append(avg_reward)
             eval_steps.append(t+1)
+            torch.save(td3, "td3_agent.pt")
 
         if done:
-            print(f"Total T: {t+1} Episode Num: {episode_num+1} Episode T: {episode_timesteps} Reward: {episode_reward:.3f}")
+            wandb.log({"episode_num": episode_num+1, "reward": episode_reward}, step=t+1)
+            # print(f"Total T: {t+1} Episode Num: {episode_num+1} Episode T: {episode_timesteps} Reward: {episode_reward:.3f}")
             state, _ = env.reset()
             episode_reward = 0
             episode_timesteps = 0
@@ -359,7 +365,8 @@ def main():
 
     # Final evaluation
     print("\nFinal Evaluation:")
-    evaluate_policy(td3, eval_env, eval_episodes=20)  # More episodes for final evaluation
+    evaluate_policy(td3, eval_env, max_timesteps, eval_episodes=20)  # More episodes for final evaluation
+    torch.save(td3, "td3_agent.pt")
     
     env.close()
     eval_env.close()

@@ -177,73 +177,7 @@ class TD3:
 
             for param, target_param in zip(self.actor.parameters(), self.actor_target.parameters()):
                 target_param.data.copy_(self.tau * param.data + (1 - self.tau) * target_param.data)
-
-# def main():
-#     # Environment setup
-#     env = gym.make("Hopper-v4")
-#     state_dim = env.observation_space.shape[0]
-#     action_dim = env.action_space.shape[0]
-#     max_action = float(env.action_space.high[0])
-
-#     # Set seeds
-#     seed = 0
-#     env.reset(seed=seed)
-#     torch.manual_seed(seed)
-#     np.random.seed(seed)
-    
-#     # Device
-#     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    
-#     # Initialize agent and replay buffer
-#     td3 = TD3(state_dim, action_dim, max_action, device)
-#     replay_buffer = ReplayBuffer()
-    
-#     # Training parameters
-#     max_timesteps = 1_000_000
-#     batch_size = 256
-#     warmup_steps = 25_000
-#     episode_reward = 0
-#     episode_timesteps = 0
-#     episode_num = 0
-
-#     state, _ = env.reset()
-#     done = False
-
-#     for t in range(max_timesteps):
-#         episode_timesteps += 1
-
-#         # Select action
-#         if t < warmup_steps:
-#             action = env.action_space.sample()
-#         else:
-#             action = td3.select_action(np.array(state))
-
-#         # Perform action
-#         next_state, reward, terminated, truncated, _ = env.step(action)
-#         done = terminated or truncated
-        
-#         # Store data in replay buffer
-#         replay_buffer.add(state, action, reward, next_state, float(done))
-        
-#         state = next_state
-#         episode_reward += reward
-
-#         # Train agent after collecting sufficient data
-#         if t >= warmup_steps:
-#             td3.train(replay_buffer, batch_size)
-
-#         if done:
-#             print(f"Total T: {t+1} Episode Num: {episode_num+1} Episode T: {episode_timesteps} Reward: {episode_reward:.3f}")
-#             state, _ = env.reset()
-#             episode_reward = 0
-#             episode_timesteps = 0
-#             episode_num += 1
-
-#     env.close()
-
-# if __name__ == "__main__":
-#     main()
-# [Previous Actor, Critic, ReplayBuffer, and TD3 classes remain exactly the same...]
+                
 
 def evaluate_policy(policy, eval_env, t, eval_episodes=10, render=False):
     """
@@ -272,11 +206,6 @@ def evaluate_policy(policy, eval_env, t, eval_episodes=10, render=False):
     
     avg_reward = avg_reward / eval_episodes
     std_reward = np.std(all_rewards)
-    
-    # print("---------------------------------------")
-    # print(f"Evaluation over {eval_episodes} episodes:")
-    # print(f"Average Reward: {avg_reward:.3f} ± {std_reward:.3f}")
-    # print("---------------------------------------")
 
     wandb.log({"mean_reward": avg_reward, "std_reward": std_reward}, step=t)    
     return avg_reward, std_reward
@@ -284,8 +213,6 @@ def evaluate_policy(policy, eval_env, t, eval_episodes=10, render=False):
 
 def main():
     # Environment setup
-    # env = gym.make("Hopper-v4")
-    # eval_env = gym.make("Hopper-v4")  # Separate environment for evaluation
     env = h_env.HockeyEnv_BasicOpponent()
     eval_env = h_env.HockeyEnv_BasicOpponent()
     
@@ -349,7 +276,6 @@ def main():
 
         # Evaluate episode
         if (t + 1) % eval_freq == 0:
-            # print(f"\nTimeStep: {t+1}")
             avg_reward, std_reward = evaluate_policy(td3, eval_env, t)
             eval_rewards.append(avg_reward)
             eval_steps.append(t+1)
@@ -357,7 +283,6 @@ def main():
 
         if done:
             wandb.log({"episode_num": episode_num+1, "reward": episode_reward}, step=t+1)
-            # print(f"Total T: {t+1} Episode Num: {episode_num+1} Episode T: {episode_timesteps} Reward: {episode_reward:.3f}")
             state, _ = env.reset()
             episode_reward = 0
             episode_timesteps = 0

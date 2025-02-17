@@ -1,3 +1,4 @@
+import sys
 import wandb
 import gymnasium as gym
 import numpy as np
@@ -278,11 +279,49 @@ def evaluate_policy(policy, eval_env, t, eval_episodes=10, render=False):
     # print(f"Average Reward: {avg_reward:.3f} ± {std_reward:.3f}")
     # print("---------------------------------------")
 
-    wandb.log({"mean_reward": avg_reward, "std_reward": std_reward}, step=t)    
+    # wandb.log({"mean_reward": avg_reward, "std_reward": std_reward}, step=t)    
     return avg_reward, std_reward
 
 
-def main():
+def flipped_evaluate_policy(policy, eval_env, t, eval_episodes=10, render=False):
+    """
+    Runs policy for X episodes and returns average reward.
+    A fixed seed is used for the eval environment.
+    """
+    avg_reward = 0.
+    all_rewards = []
+    
+    for _ in range(eval_episodes):
+        state, _ = eval_env.reset()
+        done = False
+        episode_reward = 0
+        
+        while not done:
+            action = policy.select_action(np.array(eval_env.get_agent_two_obs()), noise=0.0)
+            state, reward, terminated, truncated, _ = eval_env.flipped_step([action, state])
+            
+            done = terminated or truncated
+            episode_reward += reward
+            
+            if render:
+                eval_env.render()
+        
+        avg_reward += episode_reward
+        all_rewards.append(episode_reward)
+    
+    avg_reward = avg_reward / eval_episodes
+    std_reward = np.std(all_rewards)
+    
+    # print("---------------------------------------")
+    # print(f"Evaluation over {eval_episodes} episodes:")
+    # print(f"Average Reward: {avg_reward:.3f} ± {std_reward:.3f}")
+    # print("---------------------------------------")
+
+    # wandb.log({"mean_reward": avg_reward, "std_reward": std_reward}, step=t)    
+    return avg_reward, std_reward
+
+
+def train():
     # Environment setup
     # env = gym.make("Hopper-v4")
     # eval_env = gym.make("Hopper-v4")  # Separate environment for evaluation
@@ -366,12 +405,57 @@ def main():
     # Final evaluation
     print("\nFinal Evaluation:")
     evaluate_policy(td3, eval_env, max_timesteps, eval_episodes=20)  # More episodes for final evaluation
-    torch.save(td3, "td3_agent.pt")
+    # torch.save(td3, "td3_agent.pt")
     
-    env.close()
+    # env.close()
     eval_env.close()
     
     return eval_rewards, eval_steps
 
+
+def eval_td3():
+    # Environment setup
+    # env = gym.make("Hopper-v4")
+    # eval_env = gym.make("Hopper-v4")  # Separate environment for evaluation
+    env = h_env.HockeyEnv_BasicOpponent()
+    eval_env = h_env.HockeyEnv_BasicOpponent()
+    
+    state_dim = env.observation_space.shape[0]
+    action_dim = env.action_space.shape[0]
+    max_action = float(env.action_space.high[0])
+
+    # Set seeds
+    seed = 0
+    env.reset(seed=seed)
+    eval_env.reset(seed=seed)  # Different seed for eval env
+    torch.manual_seed(seed)
+    np.random.seed(seed)
+    
+    # Device
+    device = torch.device("mps" if torch.cuda.is_available() else "cpu")
+    
+    # Initialize agent and replay buffer
+    td3 = torch.load("td3_agent.pt") #TD3(state_dim, action_dim, max_action, device)
+
+    # Training parameters
+    max_timesteps = 2_000_000
+    batch_size = 32
+    warmup_steps = 25_000
+    eval_freq = 5000  # Evaluate every 5000 steps
+    episode_reward = 0
+    episode_timesteps = 0
+    episode_num = 0
+
+    if sys.argv[1] == "flipped":
+        eval_rewards, _ = flipped_evaluate_policy(td3, eval_env, max_timesteps, eval_episodes=10, render=True)  # More episodes for final evaluation
+    elif sys.argv[1] == "normal":
+        eval_rewards, _ = evaluate_policy(td3, eval_env, max_timesteps, eval_episodes=10, render=10)
+    # torch.save(td3, "td3_agent.pt")
+    
+    env.close()
+    eval_env.close()
+    return eval_rewards
+
 if __name__ == "__main__":
-    eval_rewards, eval_steps = main()
+    data = eval_td3()
+    print(data)

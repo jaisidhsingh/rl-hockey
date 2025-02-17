@@ -883,6 +883,15 @@ class HockeyEnv_BasicOpponent(HockeyEnv):
     action2 = np.hstack([action, a2])
     return super().step(action2)
 
+  def flipped_step(self, action: list):
+    [my_action, my_obs] = action
+    a2 = self.opponent.act(my_obs)
+    action2 = np.hstack([a2, my_action])
+    return super().step(action2)
+
+  def get_agent_two_obs(self):
+    return self.obs_agent_two()
+
 
 from gymnasium.envs.registration import register
 

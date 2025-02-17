@@ -1,5 +1,14 @@
 # Playing Hockey with RL (TD3)
 
+## Todos:
+
+- [ ] One file with all of our agent interfaces for loading and submission
+- [ ] Overleaf template + project setup
+- [ ] Tournament setup
+- [ ] Chase + Linus checkpoints to evaluate flipping
+- [ ] `wandb` setup
+
+
 ## Twin Delayed Deep Deterministic Policy Gradients
 
 ### Mean Eval Reward:

@@ -3,7 +3,7 @@
 ## Todos:
 
 - [ ] One file with all of our agent interfaces for loading and submission
-- [ ] Overleaf template + project setup
+- [x] Overleaf template + project setup
 - [ ] Tournament setup
 - [ ] Chase + Linus checkpoints to evaluate flipping
 - [ ] `wandb` setup

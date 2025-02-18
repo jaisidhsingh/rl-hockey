@@ -350,7 +350,7 @@ def train():
     max_timesteps = 2_000_000
     batch_size = 32
     warmup_steps = 25_000
-    eval_freq = 5000  # Evaluate every 5000 steps
+    eval_freq = 500000  # Evaluate every 5000 steps
     episode_reward = 0
     episode_timesteps = 0
     episode_num = 0
@@ -392,7 +392,7 @@ def train():
             avg_reward, std_reward = evaluate_policy(td3, eval_env, t)
             eval_rewards.append(avg_reward)
             eval_steps.append(t+1)
-            torch.save(td3, "td3_agent.pt")
+            torch.save(td3, f"td3_agent_{t+1//eval_freq}.pt")
 
         if done:
             wandb.log({"episode_num": episode_num+1, "reward": episode_reward}, step=t+1)

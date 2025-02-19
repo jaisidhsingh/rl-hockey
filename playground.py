@@ -17,41 +17,52 @@ def load_basic_opponent():
     return agent
 
 
-def play(player1, player2):
+def play(player1, player2, num_episodes=1000, render=False):
     env = h_env.HockeyEnv()
 
-    one_starting = np.random.choice([True, False])
-    obs, info = env.reset(one_starting=one_starting)
-    obs_agent2 = env.obs_agent_two()
+    rewards = []
 
-    for i in range(250):
-        env.render(mode="human")
-        a1 = player1.select_action(obs)
-        a2 = player2.select_action(obs_agent2)
-        obs, r, d, t, info = env.step(np.hstack([a1, a2]))
+    for i in range(num_episodes):
+        one_starting = np.random.choice([True, False])
+        obs, info = env.reset(one_starting=one_starting)
         obs_agent2 = env.obs_agent_two()
-        if d or t:
-            break
+        for j in range(250):
+            if render:
+                env.render(mode="human")
+            a1 = player1.select_action(obs)
+            a2 = player2.select_action(obs_agent2)
+            obs, r, d, t, info = env.step(np.hstack([a1, a2]))
+            obs_agent2 = env.obs_agent_two()
+            if d or t:
+                rewards.append(r)
+                break
+    
+    print("Average reward", np.mean(rewards))
     env.close()
 
 
-def test(player):
+def test(player, num_episodes=1000, render=False):
     env = h_env.HockeyEnv_BasicOpponent()
 
-    one_starting = np.random.choice([True, False])
-    obs, info = env.reset(one_starting=one_starting)
-
-    for i in range(250):
-        env.render(mode="human")
-        action = player.select_action(obs)
-        obs, r, d, t, info = env.step(action)
-        if d or t:
-            break
+    rewards = []
+    for i in range(num_episodes):
+        one_starting = np.random.choice([True, False])
+        obs, info = env.reset(one_starting=one_starting)
+        for j in range(250):
+            if render:
+                env.render(mode="human")
+            action = player.select_action(obs)
+            obs, r, d, t, info = env.step(action)
+            if d or t:
+                rewards.append(r)
+                break
+    
+    print("Average reward", np.mean(rewards))
     env.close()
 
 
 def main():
-    agent1_path = "agents/sac_agent_final.pt"
+    agent1_path = "agents/sac_agent_600000.pt"
     agent2_path = "agents/td3_agent.pt"
     player1 = load_agent(agent1_path)
     player2 = load_agent(agent2_path)
@@ -64,11 +75,9 @@ def main():
                          else "mps" if torch.backends.mps.is_available() 
                          else "cpu")
 
-    while True:
-        play(player1, player2)
+    play(player1, player2)
 
-    # while True:
-    #     test(player1)
+    # test(player1)
 
 
 if __name__ == "__main__":

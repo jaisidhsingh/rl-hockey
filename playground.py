@@ -8,9 +8,13 @@ from td3.td3 import *
 
 
 def load_agent(path):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() 
+                         else "mps" if torch.backends.mps.is_available() 
+                         else "cpu")
     agent = torch.load(path, map_location=device)
+    agent.device = device
     return agent
+
 
 def load_basic_opponent():
     agent = h_env.BasicOpponent(weak=False)
@@ -62,21 +66,13 @@ def test(player, num_episodes=1000, render=False):
 
 
 def main():
-    agent1_path = "agents/sac_agent_600000.pt"
+    agent1_path = "agents/sac_agent.pt"
     agent2_path = "agents/td3_agent.pt"
-    player1 = load_agent(agent1_path)
-    player2 = load_agent(agent2_path)
 
-    player1.device = torch.device("cuda" if torch.cuda.is_available() 
-                         else "mps" if torch.backends.mps.is_available() 
-                         else "cpu")
-    
-    player2.device = torch.device("cuda" if torch.cuda.is_available() 
-                         else "mps" if torch.backends.mps.is_available() 
-                         else "cpu")
+    player2 = load_agent(agent1_path)
+    player1 = load_agent(agent2_path)
 
-    play(player1, player2)
-
+    play(player1, player2, num_episodes=100, render=True)
     # test(player1)
 
 

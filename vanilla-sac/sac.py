@@ -210,37 +210,22 @@ class SAC(object):
 
     def update_parameters(self, memory, batch_size, updates):
         # Sample a batch from memory
-        state_batch, action_batch, reward_batch, next_state_batch, done_batch, num_steps_batch, indices_batch, weights_batch = memory.sample(batch_size=batch_size)
+        state_batch, action_batch, reward_batch, next_state_batch, done_batch = memory.sample(batch_size=batch_size)
 
         state_batch = torch.FloatTensor(state_batch).to(self.device)
         next_state_batch = torch.FloatTensor(next_state_batch).to(self.device)
         action_batch = torch.FloatTensor(action_batch).to(self.device)
         reward_batch = torch.FloatTensor(reward_batch).to(self.device).unsqueeze(1)
         done_batch = torch.FloatTensor(done_batch).to(self.device).unsqueeze(1)
-        num_steps_batch = torch.FloatTensor(num_steps_batch).to(self.device).unsqueeze(1)
-        weights_batch = torch.FloatTensor(weights_batch).to(self.device).unsqueeze(1)
-
 
         with torch.no_grad():
             next_state_action, next_state_log_pi, _ = self.policy.sample(next_state_batch)
             qf1_next_target, qf2_next_target = self.critic_target(next_state_batch, next_state_action)
             min_qf_next_target = torch.min(qf1_next_target, qf2_next_target) - self.alpha * next_state_log_pi
-            next_q_value = reward_batch + (1 - done_batch) * (self.gamma ** num_steps_batch) * (min_qf_next_target)
-
+            next_q_value = reward_batch + (1 - done_batch) * self.gamma * (min_qf_next_target)
         qf1, qf2 = self.critic(state_batch, action_batch)  # Two Q-functions to mitigate positive bias in the policy improvement step
-
-        if memory.prioritized:
-            td_error1 = next_q_value - qf1
-            td_error2 = next_q_value - qf2
-            priorities = torch.abs(((td_error1 + td_error2)/2.0).squeeze())
-            memory.update_priorities(indices_batch, priorities.detach().cpu().numpy())
-
-            # Take the mean of the weighted losses to get scalar values
-            qf1_loss = (F.mse_loss(qf1, next_q_value, reduction='none') * weights_batch).mean()
-            qf2_loss = (F.mse_loss(qf2, next_q_value, reduction='none') * weights_batch).mean()
-        else:
-            qf1_loss = F.mse_loss(qf1, next_q_value)  # JQ = 𝔼(st,at)~D[0.5(Q1(st,at) - r(st,at) - γ(𝔼st+1~p[V(st+1)]))^2]
-            qf2_loss = F.mse_loss(qf2, next_q_value)  # JQ = 𝔼(st,at)~D[0.5(Q1(st,at) - r(st,at) - γ(𝔼st+1~p[V(st+1)]))^2]
+        qf1_loss = F.mse_loss(qf1, next_q_value)  # JQ = 𝔼(st,at)~D[0.5(Q1(st,at) - r(st,at) - γ(𝔼st+1~p[V(st+1)]))^2]
+        qf2_loss = F.mse_loss(qf2, next_q_value)  # JQ = 𝔼(st,at)~D[0.5(Q1(st,at) - r(st,at) - γ(𝔼st+1~p[V(st+1)]))^2]
         qf_loss = qf1_loss + qf2_loss
 
         self.critic_optim.zero_grad()
@@ -270,6 +255,7 @@ class SAC(object):
         else:
             alpha_loss = torch.tensor(0.).to(self.device)
             alpha_tlogs = torch.tensor(self.alpha) # For TensorboardX logs
+
 
         if updates % self.target_update_interval == 0:
             soft_update(self.critic_target, self.critic, self.tau)

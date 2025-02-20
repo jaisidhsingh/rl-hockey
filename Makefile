@@ -1,18 +1,13 @@
 SHELL := C:/Program Files/Git/bin/bash.exe
 
-us:
+up-sac:
 	scp -r "sac" "stud369@login2.tcml.uni-tuebingen.de:~/projects"
 
-us2:
-	scp -r "sac2" "stud369@login2.tcml.uni-tuebingen.de:~/projects"
-
-ut:
+up-td3:
 	scp -r "td3" "stud369@login2.tcml.uni-tuebingen.de:~/projects"
 
 fetch:
 	scp -r "stud369@login2.tcml.uni-tuebingen.de:~/agents" .
-
-#pw: peika7Tein
 
 # login:
 # 	ssh stud369@login2.tcml.uni-tuebingen.de

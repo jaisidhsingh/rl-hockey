@@ -54,14 +54,19 @@ def train():
                         help='learning rate (default: 0.0003)')
     parser.add_argument('--alpha', type=float, default=0.2, metavar='G',
                         help='Temperature parameter α determines the relative importance of the entropy term against the reward (default: 0.2)')
-    parser.add_argument('--automatic_entropy_tuning', type=bool, default=True, metavar='G',
-                        help='Automatically adjust α (default: True)')
+    parser.add_argument('--automatic_entropy_tuning', action='store_true',
+                        help='Automatically adjust α (default: False)')
     parser.add_argument('--hidden_size', type=int, default=256, metavar='N',
                         help='hidden size (default: 256)')
     parser.add_argument('--target_update_interval', type=int, default=1, metavar='N',
                         help='Value target update per no. of updates per step (default: 1)')
-    parser.add_argument('--save_checkpoint_interval', type=int, default=300000, metavar='N',
-                        help='Save a checkpoint per no. of steps (default: 300000)')
+    parser.add_argument('--save_checkpoint_interval', type=int, default=200000, metavar='N',
+                        help='Save a checkpoint per no. of steps (default: 200000)')
+    parser.add_argument('--n_step_td', type=int, default=1, metavar='N',
+                        help='Number of steps for TD update')
+    parser.add_argument('--prioritized_replay', action='store_true',
+                        help='Use prioritized experience replay when sampling from the buffer (default: False)')
+    
 
     args = parser.parse_args()
 
@@ -97,6 +102,8 @@ def train():
             "automatic_entropy_tuning": args.automatic_entropy_tuning,
             "hidden_size": args.hidden_size,
             "learning_rate": args.lr,
+            "n_step_td": args.n_step_td,
+            "prioritized_replay": args.prioritized_replay,
             "batch_size": batch_size,
             "updates_per_step": updates_per_step
         }
@@ -104,7 +111,12 @@ def train():
 
     # Initialize agent and memory
     agent = SAC(env.observation_space.shape[0], env.action_space, args)
-    memory = ReplayMemory(1000000, seed)
+    memory = ReplayMemory(
+        capacity=1_000_000, 
+        seed=seed,
+        n_steps=args.n_step_td,
+        prioritized=args.prioritized_replay
+    )
 
     # Training Loop
     total_timesteps = 0
@@ -139,15 +151,6 @@ def train():
         if len(memory) > batch_size and t >= warmup_steps:
             for i in range(updates_per_step):
                 qf1, qf2, qf1_loss, qf2_loss, policy_loss, alpha_loss, alpha = agent.update_parameters(memory, batch_size, t)
-                # wandb.log({
-                #     "stats/qf1": qf1,
-                #     "stats/qf2": qf2,
-                #     "stats/alpha": alpha,
-                #     "losses/qf1_loss": qf1_loss,
-                #     "losses/qf2_loss": qf2_loss,
-                #     "losses/policy_loss": policy_loss,
-                #     "losses/alpha_loss": alpha_loss
-                # }, step=t+1)
 
         # Evaluate episode
         if (t + 1) % eval_freq == 0:
@@ -155,7 +158,6 @@ def train():
             wandb.log({
                 "reward/test": avg_reward,
                 "reward/std": std_reward,
-                "episode_num": episode_num + 1,
             }, step=t+1)
 
         if (t + 1) % args.save_checkpoint_interval == 0:

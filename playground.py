@@ -2,6 +2,7 @@ import numpy as np
 import torch
 import hockey.hockey_env as h_env
 import gymnasium as gym
+from tqdm import tqdm
 
 from sac.sac import *
 from td3.td3 import *
@@ -11,7 +12,7 @@ def load_agent(path):
     device = torch.device("cuda" if torch.cuda.is_available() 
                          else "mps" if torch.backends.mps.is_available() 
                          else "cpu")
-    agent = torch.load(path, map_location=device)
+    agent = torch.load(path, map_location=device, weights_only=False)
     agent.device = device
     return agent
 
@@ -26,7 +27,7 @@ def play(player1, player2, num_episodes=1000, render=False):
 
     rewards = []
 
-    for i in range(num_episodes):
+    for i in tqdm(range(num_episodes), desc="Playing against another agent:"):
         one_starting = np.random.choice([True, False])
         obs, info = env.reset(one_starting=one_starting)
         obs_agent2 = env.obs_agent_two()
@@ -41,7 +42,7 @@ def play(player1, player2, num_episodes=1000, render=False):
                 rewards.append(r)
                 break
     
-    print("Average reward", np.mean(rewards))
+    print("Average reward:", np.mean(rewards))
     env.close()
 
 
@@ -49,7 +50,7 @@ def test(player, num_episodes=1000, render=False):
     env = h_env.HockeyEnv_BasicOpponent()
 
     rewards = []
-    for i in range(num_episodes):
+    for i in tqdm(range(num_episodes), desc="Testing against basic opponent:"):
         one_starting = np.random.choice([True, False])
         obs, info = env.reset(one_starting=one_starting)
         for j in range(250):
@@ -61,18 +62,18 @@ def test(player, num_episodes=1000, render=False):
                 rewards.append(r)
                 break
     
-    print("Average reward", np.mean(rewards))
+    print("Average reward:", np.mean(rewards))
     env.close()
 
 
 def main():
-    agent1_path = "agents/sac_agent.pt"
-    agent2_path = "agents/td3_agent.pt"
+    agent1_path = "agents/td3_agent.pt"
+    agent2_path = "agents/vanilla_sac_agent.pt"
 
-    player2 = load_agent(agent1_path)
-    player1 = load_agent(agent2_path)
+    player1 = load_agent(agent1_path)
+    player2 = load_agent(agent2_path)
 
-    play(player1, player2, num_episodes=100, render=True)
+    play(player1, player2, num_episodes=100)
     # test(player1)
 
 

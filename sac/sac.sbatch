@@ -50,7 +50,7 @@
 #cnn_minst.py <model save path> <mnist data path>
 ####
 
-singularity run containers/container.sif python3 ~/projects/sac/main.py
+singularity run containers/container.sif python3 ~/projects/sac/main.py --automatic_entropy_tuning --prioritized_replay --n_step_td 3
 
 echo DONE!
 

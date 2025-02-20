@@ -1,6 +1,7 @@
 The best agents are:
 
-sac_agent.pt: Trained for 900k steps, eval reward vs basic opponent 9.9
+sac_agent.pt: Trained for 1.2M steps with prioritized experience replay and 3-step TD, eval reward vs basic opponent 10.0
+vanilla_sac_agent.pt: Trained for 0.9M steps, eval reward vs basic opponent 9.9
 td3_agent.pt: Trained for 2M steps, eval reward vs basic opponent 9.8
 
 The other checkpoints can be used for self-play.

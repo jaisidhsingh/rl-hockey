@@ -54,19 +54,14 @@ def train():
                         help='learning rate (default: 0.0003)')
     parser.add_argument('--alpha', type=float, default=0.2, metavar='G',
                         help='Temperature parameter α determines the relative importance of the entropy term against the reward (default: 0.2)')
-    parser.add_argument('--automatic_entropy_tuning', action='store_true',
-                        help='Automatically adjust α (default: False)')
+    parser.add_argument('--automatic_entropy_tuning', type=bool, default=True, metavar='G',
+                        help='Automatically adjust α (default: True)')
     parser.add_argument('--hidden_size', type=int, default=256, metavar='N',
                         help='hidden size (default: 256)')
     parser.add_argument('--target_update_interval', type=int, default=1, metavar='N',
                         help='Value target update per no. of updates per step (default: 1)')
-    parser.add_argument('--save_checkpoint_interval', type=int, default=300000, metavar='N',
-                        help='Save a checkpoint per no. of steps (default: 300000)')
-    parser.add_argument('--n_step_td', type=int, default=1, metavar='N',
-                        help='Number of steps for TD update')
-    parser.add_argument('--prioritized_replay', action='store_true',
-                        help='Use prioritized experience replay when sampling from the buffer (default: False)')
-    
+    parser.add_argument('--save_checkpoint_interval', type=int, default=200000, metavar='N',
+                        help='Save a checkpoint per no. of steps (default: 200000)')
 
     args = parser.parse_args()
 
@@ -102,8 +97,6 @@ def train():
             "automatic_entropy_tuning": args.automatic_entropy_tuning,
             "hidden_size": args.hidden_size,
             "learning_rate": args.lr,
-            "n_step_td": args.n_step_td,
-            "prioritized_replay": args.prioritized_replay,
             "batch_size": batch_size,
             "updates_per_step": updates_per_step
         }
@@ -111,12 +104,7 @@ def train():
 
     # Initialize agent and memory
     agent = SAC(env.observation_space.shape[0], env.action_space, args)
-    memory = ReplayMemory(
-        capacity=1_000_000, 
-        seed=seed,
-        n_steps=args.n_step_td,
-        prioritized=args.prioritized_replay
-    )
+    memory = ReplayMemory(1000000, seed)
 
     # Training Loop
     total_timesteps = 0
@@ -171,7 +159,7 @@ def train():
             }, step=t+1)
 
         if (t + 1) % args.save_checkpoint_interval == 0:
-            torch.save(agent, f"agents/sac_agent2_{t + 1}.pt")
+            torch.save(agent, f"agents/vanilla_sac_agent_{t + 1}.pt")
 
         if done:
             wandb.log({
@@ -193,7 +181,7 @@ def train():
     evaluate_policy(agent, eval_env, max_timesteps, eval_episodes=20)
     
     # Save final models
-    torch.save(agent, "agents/sac_agent2_final.pt")
+    torch.save(agent, "agents/vanilla_sac_agent_final.pt")
     
     eval_env.close()
     wandb.finish()

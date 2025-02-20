@@ -246,6 +246,7 @@ def train():
     batch_size = 32
     warmup_steps = 25_000
     eval_freq = 5000  # Evaluate every 5000 steps
+    save_checkpoint_interval = 200000
     episode_reward = 0
     episode_timesteps = 0
     episode_num = 0
@@ -288,10 +289,20 @@ def train():
             avg_reward, std_reward = evaluate_policy(td3, eval_env, t)
             eval_rewards.append(avg_reward)
             eval_steps.append(t+1)
-            torch.save(td3, "agents/td3_agent.pt")
+            wandb.log({
+                "reward/test": avg_reward,
+                "reward/std": std_reward,
+            }, step=t+1)
+        
+        if (t + 1) % save_checkpoint_interval == 0:
+            torch.save(td3, f"agents/td3_agent_{t + 1}.pt")
 
         if done:
-            wandb.log({"episode_num": episode_num+1, "reward": episode_reward}, step=t+1)
+            wandb.log({
+                "reward/train": episode_reward,
+                "episode_num": episode_num + 1,
+                "episode_length": episode_timesteps
+            }, step=t+1)
             print(f"Total T: {t+1} Episode Num: {episode_num+1} Episode T: {episode_timesteps} Reward: {episode_reward:.3f}")
             state, _ = env.reset()
             episode_reward = 0

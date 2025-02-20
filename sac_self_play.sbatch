@@ -50,7 +50,7 @@
 #cnn_minst.py <model save path> <mnist data path>
 ####
 
-singularity run containers/container.sif python3 ~/projects/sac/main.py --automatic_entropy_tuning --prioritized_replay --n_step_td 3 --agent_name sac_agent
+singularity run containers/container.sif python3 ~/sac_self_play.py --automatic_entropy_tuning --prioritized_replay --n_step_td 3 --initial_checkpoint agents/sac_agent.pt --checkpoint_dir agents/self_play_pool --agent_name sac_agent
 
 echo DONE!
 

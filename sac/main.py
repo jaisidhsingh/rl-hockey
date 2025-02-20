@@ -66,6 +66,8 @@ def train():
                         help='Number of steps for TD update')
     parser.add_argument('--prioritized_replay', action='store_true',
                         help='Use prioritized experience replay when sampling from the buffer (default: False)')
+    parser.add_argument('--agent_name', type=str, default='sac_agent',
+                        help='Base name for saved agent checkpoints (default: sac_agent)')
     
 
     args = parser.parse_args()
@@ -157,7 +159,7 @@ def train():
             }, step=t+1)
 
         if (t + 1) % args.save_checkpoint_interval == 0:
-            torch.save(agent, f"agents/sac_agent_{t + 1}.pt")
+            torch.save(agent, f"agents/{args.agent_name}_{t + 1}.pt")
 
         if done:
             wandb.log({
@@ -173,7 +175,7 @@ def train():
             episode_timesteps = 0
             episode_num += 1
 
-    torch.save(agent, "agents/sac_agent_final.pt")
+    torch.save(agent, f"agents/{args.agent_name}_final.pt")
     
     eval_env.close()
     wandb.finish()

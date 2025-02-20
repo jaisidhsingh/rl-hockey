@@ -3,6 +3,9 @@ SHELL := C:/Program Files/Git/bin/bash.exe
 up-sac:
 	scp -r "sac" "stud369@login2.tcml.uni-tuebingen.de:~/projects"
 
+up-vanilla-sac:
+	scp -r "vanilla-sac" "stud369@login2.tcml.uni-tuebingen.de:~/projects"
+
 up-td3:
 	scp -r "td3" "stud369@login2.tcml.uni-tuebingen.de:~/projects"
 

@@ -243,7 +243,7 @@ def train():
     
     # Training parameters
     max_timesteps = 2_000_000
-    batch_size = 32
+    batch_size = 256
     warmup_steps = 25_000
     eval_freq = 5000  # Evaluate every 5000 steps
     save_checkpoint_interval = 200000
@@ -251,7 +251,7 @@ def train():
     episode_timesteps = 0
     episode_num = 0
 
-    wandb.login(key="06c432da22d5e9e35fddc4c3d5febab30de45a02", verify=True)
+    wandb.login()
     wandb.init(project="rl-training", config={})
     state, _ = env.reset()
     done = False

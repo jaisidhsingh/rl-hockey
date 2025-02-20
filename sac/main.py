@@ -9,7 +9,7 @@ reload(h_env)
 
 from sac import SAC
 from memory import ReplayMemory
-# from utils import *
+
 
 def evaluate_policy(policy, eval_env, t, eval_episodes=10, render=False):
     """
@@ -90,7 +90,7 @@ def train():
     updates_per_step = 1
     
     # Initialize WandB
-    wandb.login(key="06c432da22d5e9e35fddc4c3d5febab30de45a02", verify=True)
+    wandb.login()
     wandb.init(
         project="rl-training",
         config={
@@ -130,27 +130,23 @@ def train():
     for t in range(max_timesteps):
         episode_timesteps += 1
 
-        # Select action
         if t < warmup_steps:
             action = env.action_space.sample()
         else:
             action = agent.select_action(state)
 
-        # Perform action
         next_state, reward, terminated, truncated, _ = env.step(action)
         done = terminated or truncated
         
-        # Store transition in memory
         memory.push(state, action, reward, next_state, done)
         
         state = next_state
         episode_reward += reward
         total_timesteps += 1
 
-        # Train agent after collecting sufficient data
         if len(memory) > batch_size and t >= warmup_steps:
             for i in range(updates_per_step):
-                qf1, qf2, qf1_loss, qf2_loss, policy_loss, alpha_loss, alpha = agent.update_parameters(memory, batch_size, t)
+                agent.update_parameters(memory, batch_size, t)
 
         # Evaluate episode
         if (t + 1) % eval_freq == 0:
@@ -172,17 +168,11 @@ def train():
             
             print(f"Total T: {t+1} Episode Num: {episode_num+1} Episode T: {episode_timesteps} Reward: {episode_reward:.3f}")
             
-            # Reset environment
             state, _ = env.reset()
             episode_reward = 0
             episode_timesteps = 0
             episode_num += 1
 
-    # Final evaluation
-    print("\nFinal Evaluation:")
-    evaluate_policy(agent, eval_env, max_timesteps, eval_episodes=20)
-    
-    # Save final models
     torch.save(agent, "agents/sac_agent_final.pt")
     
     eval_env.close()

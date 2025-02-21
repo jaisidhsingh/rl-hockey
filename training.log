@@ -1,0 +1,3813 @@
+/home/linus/miniconda3/envs/RL-project/lib/python3.10/runpy.py:126: RuntimeWarning: 'dreamerv3.main' found in sys.modules after import of package 'dreamerv3', but prior to execution of 'dreamerv3.main'; this may result in unpredictable behaviour
+  warn(RuntimeWarning(msg))
+Using CUDA device
+Setting up wandb...
+wandb: Currently logged in as: linus-a-schneider (linus-a-schneider-universit-t-t-bingen) to https://api.wandb.ai. Use `wandb login --relogin` to force relogin
+wandb: Using wandb-core as the SDK backend.  Please refer to https://wandb.me/wandb-core for more information.
+wandb: Tracking run with wandb version 0.19.6
+wandb: Run data is saved locally in /home/linus/git/rl-hockey/wandb/run-20250221_001929-r1xsk5v4
+wandb: Run `wandb offline` to turn off syncing.
+wandb: Syncing run silver-wildflower-22
+wandb: ⭐️ View project at https://wandb.ai/linus-a-schneider-universit-t-t-bingen/dreamerv3-hockey
+wandb: 🚀 View run at https://wandb.ai/linus-a-schneider-universit-t-t-bingen/dreamerv3-hockey/runs/r1xsk5v4
+Creating environments...
+Creating agent...
+Starting training loop...
+Device being used: cuda
+GPU being used: NVIDIA GeForce RTX 4090
+Training:   0%|                                                          | 0/500000 [00:00<?, ?it/s]Will start training after collecting 64 transitions
+
+Step 0
+Replay buffer size: 0/64
+Episode reward so far: 0.00
+Training:   0%|                                               | 1/500000 [00:00<14:32:21,  9.55it/s]
+Step 0
+Replay buffer size: 1/64
+Episode reward so far: -0.11
+
+Step 0
+Replay buffer size: 2/64
+Episode reward so far: -0.22
+
+Step 0
+Replay buffer size: 3/64
+Episode reward so far: -0.33
+
+Step 0
+Replay buffer size: 4/64
+Episode reward so far: -0.43
+
+Step 0
+Replay buffer size: 5/64
+Episode reward so far: -0.54
+
+Step 0
+Replay buffer size: 6/64
+Episode reward so far: -0.64
+
+Step 0
+Replay buffer size: 7/64
+Episode reward so far: -0.75
+
+Step 0
+Replay buffer size: 8/64
+Episode reward so far: -0.85
+
+Step 0
+Replay buffer size: 9/64
+Episode reward so far: -0.96
+
+Step 0
+Replay buffer size: 10/64
+Episode reward so far: -1.06
+
+Step 0
+Replay buffer size: 11/64
+Episode reward so far: -1.16
+
+Step 0
+Replay buffer size: 12/64
+Episode reward so far: -1.26
+
+Step 0
+Replay buffer size: 13/64
+Episode reward so far: -1.36
+
+Step 0
+Replay buffer size: 14/64
+Episode reward so far: -1.47
+
+Step 0
+Replay buffer size: 15/64
+Episode reward so far: -1.58
+
+Step 0
+Replay buffer size: 16/64
+Episode reward so far: -1.69
+
+Step 0
+Replay buffer size: 17/64
+Episode reward so far: -1.80
+
+Step 0
+Replay buffer size: 18/64
+Episode reward so far: -1.91
+
+Step 0
+Replay buffer size: 19/64
+Episode reward so far: -2.02
+
+Step 0
+Replay buffer size: 20/64
+Episode reward so far: -2.12
+
+Step 0
+Replay buffer size: 21/64
+Episode reward so far: -2.23
+
+Step 0
+Replay buffer size: 22/64
+Episode reward so far: -2.34
+
+Step 0
+Replay buffer size: 23/64
+Episode reward so far: -2.45
+
+Step 0
+Replay buffer size: 24/64
+Episode reward so far: -2.57
+
+Step 0
+Replay buffer size: 25/64
+Episode reward so far: -2.69
+
+Step 0
+Replay buffer size: 26/64
+Episode reward so far: -2.82
+
+Step 0
+Replay buffer size: 27/64
+Episode reward so far: -2.94
+
+Step 0
+Replay buffer size: 28/64
+Episode reward so far: -3.08
+
+Step 0
+Replay buffer size: 29/64
+Episode reward so far: -3.21
+
+Step 0
+Replay buffer size: 30/64
+Episode reward so far: -3.34
+
+Step 0
+Replay buffer size: 31/64
+Episode reward so far: -3.47
+
+Step 0
+Replay buffer size: 32/64
+Episode reward so far: -3.60
+
+Step 0
+Replay buffer size: 33/64
+Episode reward so far: -3.73
+
+Step 0
+Replay buffer size: 34/64
+Episode reward so far: -3.85
+
+Step 0
+Replay buffer size: 35/64
+Episode reward so far: -3.97
+
+Step 0
+Replay buffer size: 36/64
+Episode reward so far: -4.09
+
+Step 0
+Replay buffer size: 37/64
+Episode reward so far: -4.21
+
+Step 0
+Replay buffer size: 38/64
+Episode reward so far: -4.32
+
+Step 0
+Replay buffer size: 39/64
+Episode reward so far: -4.43
+
+Step 0
+Replay buffer size: 40/64
+Episode reward so far: -4.54
+
+Step 0
+Replay buffer size: 41/64
+Episode reward so far: -4.64
+
+Step 0
+Replay buffer size: 42/64
+Episode reward so far: -4.74
+
+Step 0
+Replay buffer size: 43/64
+Episode reward so far: -4.84
+
+Step 0
+Replay buffer size: 44/64
+Episode reward so far: -4.94
+
+Step 0
+Replay buffer size: 45/64
+Episode reward so far: -5.03
+
+Step 0
+Replay buffer size: 46/64
+Episode reward so far: -5.12
+
+Step 0
+Replay buffer size: 47/64
+Episode reward so far: -5.20
+
+Step 0
+Replay buffer size: 48/64
+Episode reward so far: -5.27
+
+Step 0
+Replay buffer size: 49/64
+Episode reward so far: -5.34
+
+Step 0
+Replay buffer size: 50/64
+Episode reward so far: -5.40
+
+Step 0
+Replay buffer size: 51/64
+Episode reward so far: -5.46
+
+Step 0
+Replay buffer size: 52/64
+Episode reward so far: -5.51
+
+Step 0
+Replay buffer size: 53/64
+Episode reward so far: -5.55
+
+Step 0
+Replay buffer size: 54/64
+Episode reward so far: -5.60
+
+Step 0
+Replay buffer size: 55/64
+Episode reward so far: -5.64
+
+Step 0
+Replay buffer size: 56/64
+Episode reward so far: -5.69
+
+Step 0
+Replay buffer size: 57/64
+Episode reward so far: -5.73
+
+Step 0
+Replay buffer size: 58/64
+Episode reward so far: -5.78
+
+Step 0
+Replay buffer size: 59/64
+Episode reward so far: -5.83
+
+Step 0
+Replay buffer size: 60/64
+Episode reward so far: -5.88
+
+Step 0
+Replay buffer size: 61/64
+Episode reward so far: -5.94
+
+Step 0
+Replay buffer size: 62/64
+Episode reward so far: -5.99
+
+Step 0
+Replay buffer size: 63/64
+Episode reward so far: -6.05
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 64
+Online queue size: 64
+Available online indices: 64
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+/home/linus/git/rl-hockey/dreamerv3/world_model.py:214: UserWarning: Using a target size (torch.Size([1, 64, 1])) that is different to the input size (torch.Size([1, 64, 255])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  'world_model/reward': F.mse_loss(
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                | 64/500000 [00:00<14:32:14,  9.55it/s, reward=-6.10]
+Step 0
+Replay buffer size: 64/64
+Episode reward so far: -6.10
+Training:   0%|                                  | 65/500000 [00:00<26:14, 317.48it/s, reward=-6.10]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 65
+Online queue size: 65
+Available online indices: 65
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                  | 65/500000 [00:00<26:14, 317.48it/s, reward=-6.16]
+Step 0
+Replay buffer size: 65/64
+Episode reward so far: -6.16
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 66
+Online queue size: 66
+Available online indices: 66
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                  | 66/500000 [00:00<26:14, 317.48it/s, reward=-6.22]
+Step 0
+Replay buffer size: 66/64
+Episode reward so far: -6.22
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 67
+Online queue size: 67
+Available online indices: 67
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                  | 67/500000 [00:00<26:14, 317.48it/s, reward=-6.27]
+Step 0
+Replay buffer size: 67/64
+Episode reward so far: -6.27
+Training:   0%|                                  | 68/500000 [00:00<44:38, 186.65it/s, reward=-6.27]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 68
+Online queue size: 68
+Available online indices: 68
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                  | 68/500000 [00:00<44:38, 186.65it/s, reward=-6.33]
+Step 0
+Replay buffer size: 68/64
+Episode reward so far: -6.33
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 69
+Online queue size: 69
+Available online indices: 69
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                  | 69/500000 [00:00<44:38, 186.65it/s, reward=-6.39]
+Step 0
+Replay buffer size: 69/64
+Episode reward so far: -6.39
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 70
+Online queue size: 70
+Available online indices: 70
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                  | 70/500000 [00:00<44:38, 186.65it/s, reward=-6.44]
+Step 0
+Replay buffer size: 70/64
+Episode reward so far: -6.44
+Training:   0%|                                | 71/500000 [00:00<1:07:26, 123.53it/s, reward=-6.44]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 71
+Online queue size: 71
+Available online indices: 71
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                | 71/500000 [00:00<1:07:26, 123.53it/s, reward=-6.50]
+Step 0
+Replay buffer size: 71/64
+Episode reward so far: -6.50
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 72
+Online queue size: 72
+Available online indices: 72
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                | 72/500000 [00:00<1:07:26, 123.53it/s, reward=-6.57]
+Step 0
+Replay buffer size: 72/64
+Episode reward so far: -6.57
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 73
+Online queue size: 73
+Available online indices: 73
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                | 73/500000 [00:00<1:07:26, 123.53it/s, reward=-6.64]
+Step 0
+Replay buffer size: 73/64
+Episode reward so far: -6.64
+Training:   0%|                                 | 74/500000 [00:00<1:34:45, 87.93it/s, reward=-6.64]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 74
+Online queue size: 74
+Available online indices: 74
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 74/500000 [00:00<1:34:45, 87.93it/s, reward=-6.71]
+Step 0
+Replay buffer size: 74/64
+Episode reward so far: -6.71
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 75
+Online queue size: 75
+Available online indices: 75
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 75/500000 [00:00<1:34:45, 87.93it/s, reward=-6.79]
+Step 0
+Replay buffer size: 75/64
+Episode reward so far: -6.79
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 76
+Online queue size: 76
+Available online indices: 76
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 76/500000 [00:00<1:34:45, 87.93it/s, reward=-6.88]
+Step 0
+Replay buffer size: 76/64
+Episode reward so far: -6.88
+Training:   0%|                                 | 77/500000 [00:00<2:04:00, 67.19it/s, reward=-6.88]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 77
+Online queue size: 77
+Available online indices: 77
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 77/500000 [00:00<2:04:00, 67.19it/s, reward=-6.98]
+Step 0
+Replay buffer size: 77/64
+Episode reward so far: -6.98
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 78
+Online queue size: 78
+Available online indices: 78
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 78/500000 [00:00<2:04:00, 67.19it/s, reward=-7.08]
+Step 0
+Replay buffer size: 78/64
+Episode reward so far: -7.08
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 79
+Online queue size: 79
+Available online indices: 79
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 79/500000 [00:00<2:04:00, 67.19it/s, reward=-7.18]
+Step 0
+Replay buffer size: 79/64
+Episode reward so far: -7.18
+Training:   0%|                                 | 80/500000 [00:00<2:34:50, 53.81it/s, reward=-7.18]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 80
+Online queue size: 80
+Available online indices: 80
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 80/500000 [00:00<2:34:50, 53.81it/s, reward=-7.29]
+Step 0
+Replay buffer size: 80/64
+Episode reward so far: -7.29
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 81
+Online queue size: 81
+Available online indices: 81
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 81/500000 [00:00<2:34:50, 53.81it/s, reward=-7.40]
+Step 0
+Replay buffer size: 81/64
+Episode reward so far: -7.40
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 82
+Online queue size: 82
+Available online indices: 82
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 82/500000 [00:00<2:34:50, 53.81it/s, reward=-7.51]
+Step 0
+Replay buffer size: 82/64
+Episode reward so far: -7.51
+Training:   0%|                                 | 83/500000 [00:00<3:05:06, 45.01it/s, reward=-7.51]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 83
+Online queue size: 83
+Available online indices: 83
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 83/500000 [00:00<3:05:06, 45.01it/s, reward=-7.62]
+Step 0
+Replay buffer size: 83/64
+Episode reward so far: -7.62
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 84
+Online queue size: 84
+Available online indices: 84
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 84/500000 [00:01<3:05:06, 45.01it/s, reward=-7.73]
+Step 0
+Replay buffer size: 84/64
+Episode reward so far: -7.73
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 85
+Online queue size: 85
+Available online indices: 85
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 85/500000 [00:01<3:05:06, 45.01it/s, reward=-7.84]
+Step 0
+Replay buffer size: 85/64
+Episode reward so far: -7.84
+Training:   0%|                                 | 86/500000 [00:01<3:32:50, 39.15it/s, reward=-7.84]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 86
+Online queue size: 86
+Available online indices: 86
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 86/500000 [00:01<3:32:50, 39.15it/s, reward=-7.96]
+Step 0
+Replay buffer size: 86/64
+Episode reward so far: -7.96
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 87
+Online queue size: 87
+Available online indices: 87
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 87/500000 [00:01<3:32:50, 39.15it/s, reward=-8.08]
+Step 0
+Replay buffer size: 87/64
+Episode reward so far: -8.08
+Training:   0%|                                 | 88/500000 [00:01<4:20:16, 32.01it/s, reward=-8.08]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 88
+Online queue size: 88
+Available online indices: 88
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 88/500000 [00:01<4:20:16, 32.01it/s, reward=-8.20]
+Step 0
+Replay buffer size: 88/64
+Episode reward so far: -8.20
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 89
+Online queue size: 89
+Available online indices: 89
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 89/500000 [00:01<4:20:16, 32.01it/s, reward=-8.32]
+Step 0
+Replay buffer size: 89/64
+Episode reward so far: -8.32
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 90
+Online queue size: 90
+Available online indices: 90
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 90/500000 [00:01<4:20:16, 32.01it/s, reward=-8.44]
+Step 0
+Replay buffer size: 90/64
+Episode reward so far: -8.44
+Training:   0%|                                 | 91/500000 [00:01<4:36:33, 30.13it/s, reward=-8.44]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 91
+Online queue size: 91
+Available online indices: 91
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 91/500000 [00:01<4:36:33, 30.13it/s, reward=-8.56]
+Step 0
+Replay buffer size: 91/64
+Episode reward so far: -8.56
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 92
+Online queue size: 92
+Available online indices: 92
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 92/500000 [00:01<4:36:33, 30.13it/s, reward=-8.69]
+Step 0
+Replay buffer size: 92/64
+Episode reward so far: -8.69
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 93
+Online queue size: 93
+Available online indices: 93
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 93/500000 [00:01<4:36:33, 30.13it/s, reward=-8.81]
+Step 0
+Replay buffer size: 93/64
+Episode reward so far: -8.81
+Training:   0%|                                 | 94/500000 [00:01<4:48:58, 28.83it/s, reward=-8.81]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 94
+Online queue size: 94
+Available online indices: 94
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 94/500000 [00:01<4:48:58, 28.83it/s, reward=-8.94]
+Step 0
+Replay buffer size: 94/64
+Episode reward so far: -8.94
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 95
+Online queue size: 95
+Available online indices: 95
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 95/500000 [00:01<4:48:58, 28.83it/s, reward=-9.06]
+Step 0
+Replay buffer size: 95/64
+Episode reward so far: -9.06
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 96
+Online queue size: 96
+Available online indices: 96
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 96/500000 [00:01<4:48:58, 28.83it/s, reward=-9.18]
+Step 0
+Replay buffer size: 96/64
+Episode reward so far: -9.18
+Training:   0%|                                 | 97/500000 [00:01<4:58:22, 27.92it/s, reward=-9.18]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 97
+Online queue size: 97
+Available online indices: 97
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 97/500000 [00:01<4:58:22, 27.92it/s, reward=-9.31]
+Step 0
+Replay buffer size: 97/64
+Episode reward so far: -9.31
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 98
+Online queue size: 98
+Available online indices: 98
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 98/500000 [00:01<4:58:22, 27.92it/s, reward=-9.43]
+Step 0
+Replay buffer size: 98/64
+Episode reward so far: -9.43
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 99
+Online queue size: 99
+Available online indices: 99
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                 | 99/500000 [00:01<4:58:22, 27.92it/s, reward=-9.54]
+Step 0
+Replay buffer size: 99/64
+Episode reward so far: -9.54
+Training:   0%|                                | 100/500000 [00:01<5:04:51, 27.33it/s, reward=-9.54]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 100
+Online queue size: 100
+Available online indices: 100
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                | 100/500000 [00:01<5:04:51, 27.33it/s, reward=-9.66]
+Step 0
+Replay buffer size: 100/64
+Episode reward so far: -9.66
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 101
+Online queue size: 101
+Available online indices: 101
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                | 101/500000 [00:01<5:04:51, 27.33it/s, reward=-9.78]
+Step 0
+Replay buffer size: 101/64
+Episode reward so far: -9.78
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 102
+Online queue size: 102
+Available online indices: 102
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                                | 102/500000 [00:01<5:04:51, 27.33it/s, reward=-9.90]
+Step 0
+Replay buffer size: 102/64
+Episode reward so far: -9.90
+Training:   0%|                                | 103/500000 [00:01<5:13:04, 26.61it/s, reward=-9.90]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 103
+Online queue size: 103
+Available online indices: 103
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 103/500000 [00:01<5:13:04, 26.61it/s, reward=-10.01]
+Step 0
+Replay buffer size: 103/64
+Episode reward so far: -10.01
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 104
+Online queue size: 104
+Available online indices: 104
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 104/500000 [00:01<5:13:04, 26.61it/s, reward=-10.13]
+Step 0
+Replay buffer size: 104/64
+Episode reward so far: -10.13
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 105
+Online queue size: 105
+Available online indices: 105
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 105/500000 [00:01<5:13:04, 26.61it/s, reward=-10.26]
+Step 0
+Replay buffer size: 105/64
+Episode reward so far: -10.26
+Training:   0%|                               | 106/500000 [00:01<5:15:54, 26.37it/s, reward=-10.26]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 106
+Online queue size: 106
+Available online indices: 106
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 106/500000 [00:01<5:15:54, 26.37it/s, reward=-10.38]
+Step 0
+Replay buffer size: 106/64
+Episode reward so far: -10.38
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 107
+Online queue size: 107
+Available online indices: 107
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 107/500000 [00:01<5:15:54, 26.37it/s, reward=-10.51]
+Step 0
+Replay buffer size: 107/64
+Episode reward so far: -10.51
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 108
+Online queue size: 108
+Available online indices: 108
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 108/500000 [00:01<5:15:54, 26.37it/s, reward=-10.64]
+Step 0
+Replay buffer size: 108/64
+Episode reward so far: -10.64
+Training:   0%|                               | 109/500000 [00:01<5:17:17, 26.26it/s, reward=-10.64]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 109
+Online queue size: 109
+Available online indices: 109
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 109/500000 [00:02<5:17:17, 26.26it/s, reward=-10.77]
+Step 0
+Replay buffer size: 109/64
+Episode reward so far: -10.77
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 110
+Online queue size: 110
+Available online indices: 110
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 110/500000 [00:02<5:17:17, 26.26it/s, reward=-10.91]
+Step 0
+Replay buffer size: 110/64
+Episode reward so far: -10.91
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 111
+Online queue size: 111
+Available online indices: 111
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 111/500000 [00:02<5:17:17, 26.26it/s, reward=-11.04]
+Step 0
+Replay buffer size: 111/64
+Episode reward so far: -11.04
+Training:   0%|                               | 112/500000 [00:02<5:18:44, 26.14it/s, reward=-11.04]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 112
+Online queue size: 112
+Available online indices: 112
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 112/500000 [00:02<5:18:44, 26.14it/s, reward=-11.18]
+Step 0
+Replay buffer size: 112/64
+Episode reward so far: -11.18
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 113
+Online queue size: 113
+Available online indices: 113
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 113/500000 [00:02<5:18:44, 26.14it/s, reward=-11.32]
+Step 0
+Replay buffer size: 113/64
+Episode reward so far: -11.32
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 114
+Online queue size: 114
+Available online indices: 114
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 114/500000 [00:02<5:18:44, 26.14it/s, reward=-11.46]
+Step 0
+Replay buffer size: 114/64
+Episode reward so far: -11.46
+Training:   0%|                               | 115/500000 [00:02<5:22:50, 25.81it/s, reward=-11.46]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 115
+Online queue size: 115
+Available online indices: 115
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 115/500000 [00:02<5:22:50, 25.81it/s, reward=-11.61]
+Step 0
+Replay buffer size: 115/64
+Episode reward so far: -11.61
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 116
+Online queue size: 116
+Available online indices: 116
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 116/500000 [00:02<5:22:50, 25.81it/s, reward=-11.76]
+Step 0
+Replay buffer size: 116/64
+Episode reward so far: -11.76
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 117
+Online queue size: 117
+Available online indices: 117
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 117/500000 [00:02<5:22:50, 25.81it/s, reward=-11.90]
+Step 0
+Replay buffer size: 117/64
+Episode reward so far: -11.90
+Training:   0%|                               | 118/500000 [00:02<5:23:00, 25.79it/s, reward=-11.90]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 118
+Online queue size: 118
+Available online indices: 118
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 118/500000 [00:02<5:23:00, 25.79it/s, reward=-12.05]
+Step 0
+Replay buffer size: 118/64
+Episode reward so far: -12.05
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 119
+Online queue size: 119
+Available online indices: 119
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 119/500000 [00:02<5:23:00, 25.79it/s, reward=-12.20]
+Step 0
+Replay buffer size: 119/64
+Episode reward so far: -12.20
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 120
+Online queue size: 120
+Available online indices: 120
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 120/500000 [00:02<5:23:00, 25.79it/s, reward=-12.35]
+Step 0
+Replay buffer size: 120/64
+Episode reward so far: -12.35
+Training:   0%|                               | 121/500000 [00:02<5:23:31, 25.75it/s, reward=-12.35]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 121
+Online queue size: 121
+Available online indices: 121
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 121/500000 [00:02<5:23:31, 25.75it/s, reward=-12.50]
+Step 0
+Replay buffer size: 121/64
+Episode reward so far: -12.50
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 122
+Online queue size: 122
+Available online indices: 122
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 122/500000 [00:02<5:23:31, 25.75it/s, reward=-12.65]
+Step 0
+Replay buffer size: 122/64
+Episode reward so far: -12.65
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 123
+Online queue size: 123
+Available online indices: 123
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 123/500000 [00:02<5:23:31, 25.75it/s, reward=-12.81]
+Step 0
+Replay buffer size: 123/64
+Episode reward so far: -12.81
+Training:   0%|                               | 124/500000 [00:02<5:22:58, 25.80it/s, reward=-12.81]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 124
+Online queue size: 124
+Available online indices: 124
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 124/500000 [00:02<5:22:58, 25.80it/s, reward=-12.96]
+Step 0
+Replay buffer size: 124/64
+Episode reward so far: -12.96
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 125
+Online queue size: 125
+Available online indices: 125
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 125/500000 [00:02<5:22:58, 25.80it/s, reward=-13.11]
+Step 0
+Replay buffer size: 125/64
+Episode reward so far: -13.11
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 126
+Online queue size: 126
+Available online indices: 126
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 126/500000 [00:02<5:22:58, 25.80it/s, reward=-13.27]
+Step 0
+Replay buffer size: 126/64
+Episode reward so far: -13.27
+Training:   0%|                               | 127/500000 [00:02<5:22:34, 25.83it/s, reward=-13.27]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 1
+
+=== Replay Buffer Sampling ===
+Requested batch size: 1
+Current buffer size: 127
+Online queue size: 127
+Available online indices: 127
+Sampling complete
+Final sequence count: 1
+Batch shapes:
+  observations: torch.Size([1, 64, 18])
+  actions: torch.Size([1, 64, 4])
+  rewards: torch.Size([1, 64])
+  terminals: torch.Size([1, 64])
+  episode_starts: torch.Size([1, 64])
+  latent_states:
+    deterministic: torch.Size([1, 64, 1024])
+    stochastic: torch.Size([1, 64, 16, 16])
+    logits: torch.Size([1, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 1
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([1, 64, 1024])
+  stochastic: torch.Size([1, 64, 16, 16])
+  logits: torch.Size([1, 64, 16, 16])
+Output shape for deterministic: torch.Size([15, 1024])
+Output shape for stochastic: torch.Size([15, 16, 16])
+Output shape for logits: torch.Size([15, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 127/500000 [00:02<5:22:34, 25.83it/s, reward=-13.43]
+Step 0
+Replay buffer size: 127/64
+Episode reward so far: -13.43
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 2
+
+=== Replay Buffer Sampling ===
+Requested batch size: 2
+Current buffer size: 128
+Online queue size: 128
+Available online indices: 128
+Sampling complete
+Final sequence count: 2
+Batch shapes:
+  observations: torch.Size([2, 64, 18])
+  actions: torch.Size([2, 64, 4])
+  rewards: torch.Size([2, 64])
+  terminals: torch.Size([2, 64])
+  episode_starts: torch.Size([2, 64])
+  latent_states:
+    deterministic: torch.Size([2, 64, 1024])
+    stochastic: torch.Size([2, 64, 16, 16])
+    logits: torch.Size([2, 64, 16, 16])
+
+2. Computing world model loss...
+/home/linus/git/rl-hockey/dreamerv3/world_model.py:214: UserWarning: Using a target size (torch.Size([2, 64, 1])) that is different to the input size (torch.Size([2, 64, 255])). This will likely lead to incorrect results due to broadcasting. Please ensure they have the same size.
+  'world_model/reward': F.mse_loss(
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 2
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([2, 64, 1024])
+  stochastic: torch.Size([2, 64, 16, 16])
+  logits: torch.Size([2, 64, 16, 16])
+Output shape for deterministic: torch.Size([30, 1024])
+Output shape for stochastic: torch.Size([30, 16, 16])
+Output shape for logits: torch.Size([30, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 128/500000 [00:02<5:22:34, 25.83it/s, reward=-13.59]
+Step 0
+Replay buffer size: 128/64
+Episode reward so far: -13.59
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 2
+
+=== Replay Buffer Sampling ===
+Requested batch size: 2
+Current buffer size: 129
+Online queue size: 128
+Available online indices: 128
+Sampling complete
+Final sequence count: 2
+Batch shapes:
+  observations: torch.Size([2, 64, 18])
+  actions: torch.Size([2, 64, 4])
+  rewards: torch.Size([2, 64])
+  terminals: torch.Size([2, 64])
+  episode_starts: torch.Size([2, 64])
+  latent_states:
+    deterministic: torch.Size([2, 64, 1024])
+    stochastic: torch.Size([2, 64, 16, 16])
+    logits: torch.Size([2, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 2
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([2, 64, 1024])
+  stochastic: torch.Size([2, 64, 16, 16])
+  logits: torch.Size([2, 64, 16, 16])
+Output shape for deterministic: torch.Size([30, 1024])
+Output shape for stochastic: torch.Size([30, 16, 16])
+Output shape for logits: torch.Size([30, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 129/500000 [00:02<5:22:34, 25.83it/s, reward=-13.75]
+Step 0
+Replay buffer size: 129/64
+Episode reward so far: -13.75
+Training:   0%|                               | 130/500000 [00:02<5:26:00, 25.56it/s, reward=-13.75]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 2
+
+=== Replay Buffer Sampling ===
+Requested batch size: 2
+Current buffer size: 130
+Online queue size: 128
+Available online indices: 128
+Sampling complete
+Final sequence count: 2
+Batch shapes:
+  observations: torch.Size([2, 64, 18])
+  actions: torch.Size([2, 64, 4])
+  rewards: torch.Size([2, 64])
+  terminals: torch.Size([2, 64])
+  episode_starts: torch.Size([2, 64])
+  latent_states:
+    deterministic: torch.Size([2, 64, 1024])
+    stochastic: torch.Size([2, 64, 16, 16])
+    logits: torch.Size([2, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 2
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([2, 64, 1024])
+  stochastic: torch.Size([2, 64, 16, 16])
+  logits: torch.Size([2, 64, 16, 16])
+Output shape for deterministic: torch.Size([30, 1024])
+Output shape for stochastic: torch.Size([30, 16, 16])
+Output shape for logits: torch.Size([30, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 130/500000 [00:02<5:26:00, 25.56it/s, reward=-13.91]
+Step 0
+Replay buffer size: 130/64
+Episode reward so far: -13.91
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 2
+
+=== Replay Buffer Sampling ===
+Requested batch size: 2
+Current buffer size: 131
+Online queue size: 128
+Available online indices: 128
+Sampling complete
+Final sequence count: 2
+Batch shapes:
+  observations: torch.Size([2, 64, 18])
+  actions: torch.Size([2, 64, 4])
+  rewards: torch.Size([2, 64])
+  terminals: torch.Size([2, 64])
+  episode_starts: torch.Size([2, 64])
+  latent_states:
+    deterministic: torch.Size([2, 64, 1024])
+    stochastic: torch.Size([2, 64, 16, 16])
+    logits: torch.Size([2, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 2
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([2, 64, 1024])
+  stochastic: torch.Size([2, 64, 16, 16])
+  logits: torch.Size([2, 64, 16, 16])
+Output shape for deterministic: torch.Size([30, 1024])
+Output shape for stochastic: torch.Size([30, 16, 16])
+Output shape for logits: torch.Size([30, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 131/500000 [00:02<5:26:00, 25.56it/s, reward=-14.07]
+Step 0
+Replay buffer size: 131/64
+Episode reward so far: -14.07
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 2
+
+=== Replay Buffer Sampling ===
+Requested batch size: 2
+Current buffer size: 132
+Online queue size: 128
+Available online indices: 128
+Sampling complete
+Final sequence count: 2
+Batch shapes:
+  observations: torch.Size([2, 64, 18])
+  actions: torch.Size([2, 64, 4])
+  rewards: torch.Size([2, 64])
+  terminals: torch.Size([2, 64])
+  episode_starts: torch.Size([2, 64])
+  latent_states:
+    deterministic: torch.Size([2, 64, 1024])
+    stochastic: torch.Size([2, 64, 16, 16])
+    logits: torch.Size([2, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 2
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([2, 64, 1024])
+  stochastic: torch.Size([2, 64, 16, 16])
+  logits: torch.Size([2, 64, 16, 16])
+Output shape for deterministic: torch.Size([30, 1024])
+Output shape for stochastic: torch.Size([30, 16, 16])
+Output shape for logits: torch.Size([30, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 132/500000 [00:02<5:26:00, 25.56it/s, reward=-14.23]
+Step 0
+Replay buffer size: 132/64
+Episode reward so far: -14.23
+Training:   0%|                               | 133/500000 [00:02<5:26:18, 25.53it/s, reward=-14.23]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 2
+
+=== Replay Buffer Sampling ===
+Requested batch size: 2
+Current buffer size: 133
+Online queue size: 128
+Available online indices: 128
+Sampling complete
+Final sequence count: 2
+Batch shapes:
+  observations: torch.Size([2, 64, 18])
+  actions: torch.Size([2, 64, 4])
+  rewards: torch.Size([2, 64])
+  terminals: torch.Size([2, 64])
+  episode_starts: torch.Size([2, 64])
+  latent_states:
+    deterministic: torch.Size([2, 64, 1024])
+    stochastic: torch.Size([2, 64, 16, 16])
+    logits: torch.Size([2, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 2
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([2, 64, 1024])
+  stochastic: torch.Size([2, 64, 16, 16])
+  logits: torch.Size([2, 64, 16, 16])
+Output shape for deterministic: torch.Size([30, 1024])
+Output shape for stochastic: torch.Size([30, 16, 16])
+Output shape for logits: torch.Size([30, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 133/500000 [00:02<5:26:18, 25.53it/s, reward=-14.39]
+Step 0
+Replay buffer size: 133/64
+Episode reward so far: -14.39
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 2
+
+=== Replay Buffer Sampling ===
+Requested batch size: 2
+Current buffer size: 134
+Online queue size: 128
+Available online indices: 128
+Sampling complete
+Final sequence count: 2
+Batch shapes:
+  observations: torch.Size([2, 64, 18])
+  actions: torch.Size([2, 64, 4])
+  rewards: torch.Size([2, 64])
+  terminals: torch.Size([2, 64])
+  episode_starts: torch.Size([2, 64])
+  latent_states:
+    deterministic: torch.Size([2, 64, 1024])
+    stochastic: torch.Size([2, 64, 16, 16])
+    logits: torch.Size([2, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 2
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([2, 64, 1024])
+  stochastic: torch.Size([2, 64, 16, 16])
+  logits: torch.Size([2, 64, 16, 16])
+Output shape for deterministic: torch.Size([30, 1024])
+Output shape for stochastic: torch.Size([30, 16, 16])
+Output shape for logits: torch.Size([30, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 134/500000 [00:02<5:26:18, 25.53it/s, reward=-14.55]
+Step 0
+Replay buffer size: 134/64
+Episode reward so far: -14.55
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 2
+
+=== Replay Buffer Sampling ===
+Requested batch size: 2
+Current buffer size: 135
+Online queue size: 128
+Available online indices: 128
+Sampling complete
+Final sequence count: 2
+Batch shapes:
+  observations: torch.Size([2, 64, 18])
+  actions: torch.Size([2, 64, 4])
+  rewards: torch.Size([2, 64])
+  terminals: torch.Size([2, 64])
+  episode_starts: torch.Size([2, 64])
+  latent_states:
+    deterministic: torch.Size([2, 64, 1024])
+    stochastic: torch.Size([2, 64, 16, 16])
+    logits: torch.Size([2, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 2
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([2, 64, 1024])
+  stochastic: torch.Size([2, 64, 16, 16])
+  logits: torch.Size([2, 64, 16, 16])
+Output shape for deterministic: torch.Size([30, 1024])
+Output shape for stochastic: torch.Size([30, 16, 16])
+Output shape for logits: torch.Size([30, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 135/500000 [00:03<5:26:18, 25.53it/s, reward=-14.72]
+Step 0
+Replay buffer size: 135/64
+Episode reward so far: -14.72
+Training:   0%|                               | 136/500000 [00:03<5:25:25, 25.60it/s, reward=-14.72]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 2
+
+=== Replay Buffer Sampling ===
+Requested batch size: 2
+Current buffer size: 136
+Online queue size: 128
+Available online indices: 128
+Sampling complete
+Final sequence count: 2
+Batch shapes:
+  observations: torch.Size([2, 64, 18])
+  actions: torch.Size([2, 64, 4])
+  rewards: torch.Size([2, 64])
+  terminals: torch.Size([2, 64])
+  episode_starts: torch.Size([2, 64])
+  latent_states:
+    deterministic: torch.Size([2, 64, 1024])
+    stochastic: torch.Size([2, 64, 16, 16])
+    logits: torch.Size([2, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 2
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([2, 64, 1024])
+  stochastic: torch.Size([2, 64, 16, 16])
+  logits: torch.Size([2, 64, 16, 16])
+Output shape for deterministic: torch.Size([30, 1024])
+Output shape for stochastic: torch.Size([30, 16, 16])
+Output shape for logits: torch.Size([30, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 136/500000 [00:03<5:25:25, 25.60it/s, reward=-14.88]
+Step 0
+Replay buffer size: 136/64
+Episode reward so far: -14.88
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 2
+
+=== Replay Buffer Sampling ===
+Requested batch size: 2
+Current buffer size: 137
+Online queue size: 128
+Available online indices: 128
+Sampling complete
+Final sequence count: 2
+Batch shapes:
+  observations: torch.Size([2, 64, 18])
+  actions: torch.Size([2, 64, 4])
+  rewards: torch.Size([2, 64])
+  terminals: torch.Size([2, 64])
+  episode_starts: torch.Size([2, 64])
+  latent_states:
+    deterministic: torch.Size([2, 64, 1024])
+    stochastic: torch.Size([2, 64, 16, 16])
+    logits: torch.Size([2, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 2
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([2, 64, 1024])
+  stochastic: torch.Size([2, 64, 16, 16])
+  logits: torch.Size([2, 64, 16, 16])
+Output shape for deterministic: torch.Size([30, 1024])
+Output shape for stochastic: torch.Size([30, 16, 16])
+Output shape for logits: torch.Size([30, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 137/500000 [00:03<5:25:25, 25.60it/s, reward=-15.05]
+Step 0
+Replay buffer size: 137/64
+Episode reward so far: -15.05
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 2
+
+=== Replay Buffer Sampling ===
+Requested batch size: 2
+Current buffer size: 138
+Online queue size: 128
+Available online indices: 128
+Sampling complete
+Final sequence count: 2
+Batch shapes:
+  observations: torch.Size([2, 64, 18])
+  actions: torch.Size([2, 64, 4])
+  rewards: torch.Size([2, 64])
+  terminals: torch.Size([2, 64])
+  episode_starts: torch.Size([2, 64])
+  latent_states:
+    deterministic: torch.Size([2, 64, 1024])
+    stochastic: torch.Size([2, 64, 16, 16])
+    logits: torch.Size([2, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 2
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([2, 64, 1024])
+  stochastic: torch.Size([2, 64, 16, 16])
+  logits: torch.Size([2, 64, 16, 16])
+Output shape for deterministic: torch.Size([30, 1024])
+Output shape for stochastic: torch.Size([30, 16, 16])
+Output shape for logits: torch.Size([30, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 138/500000 [00:03<5:25:25, 25.60it/s, reward=-15.22]
+Step 0
+Replay buffer size: 138/64
+Episode reward so far: -15.22
+Training:   0%|                               | 139/500000 [00:03<5:25:00, 25.63it/s, reward=-15.22]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 2
+
+=== Replay Buffer Sampling ===
+Requested batch size: 2
+Current buffer size: 139
+Online queue size: 128
+Available online indices: 128
+Sampling complete
+Final sequence count: 2
+Batch shapes:
+  observations: torch.Size([2, 64, 18])
+  actions: torch.Size([2, 64, 4])
+  rewards: torch.Size([2, 64])
+  terminals: torch.Size([2, 64])
+  episode_starts: torch.Size([2, 64])
+  latent_states:
+    deterministic: torch.Size([2, 64, 1024])
+    stochastic: torch.Size([2, 64, 16, 16])
+    logits: torch.Size([2, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 2
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([2, 64, 1024])
+  stochastic: torch.Size([2, 64, 16, 16])
+  logits: torch.Size([2, 64, 16, 16])
+Output shape for deterministic: torch.Size([30, 1024])
+Output shape for stochastic: torch.Size([30, 16, 16])
+Output shape for logits: torch.Size([30, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 139/500000 [00:03<5:25:00, 25.63it/s, reward=-15.39]
+Step 0
+Replay buffer size: 139/64
+Episode reward so far: -15.39
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 2
+
+=== Replay Buffer Sampling ===
+Requested batch size: 2
+Current buffer size: 140
+Online queue size: 128
+Available online indices: 128
+Sampling complete
+Final sequence count: 2
+Batch shapes:
+  observations: torch.Size([2, 64, 18])
+  actions: torch.Size([2, 64, 4])
+  rewards: torch.Size([2, 64])
+  terminals: torch.Size([2, 64])
+  episode_starts: torch.Size([2, 64])
+  latent_states:
+    deterministic: torch.Size([2, 64, 1024])
+    stochastic: torch.Size([2, 64, 16, 16])
+    logits: torch.Size([2, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 2
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([2, 64, 1024])
+  stochastic: torch.Size([2, 64, 16, 16])
+  logits: torch.Size([2, 64, 16, 16])
+Output shape for deterministic: torch.Size([30, 1024])
+Output shape for stochastic: torch.Size([30, 16, 16])
+Output shape for logits: torch.Size([30, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 140/500000 [00:03<5:25:00, 25.63it/s, reward=-15.56]
+Step 0
+Replay buffer size: 140/64
+Episode reward so far: -15.56
+
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 2
+
+=== Replay Buffer Sampling ===
+Requested batch size: 2
+Current buffer size: 141
+Online queue size: 128
+Available online indices: 128
+Sampling complete
+Final sequence count: 2
+Batch shapes:
+  observations: torch.Size([2, 64, 18])
+  actions: torch.Size([2, 64, 4])
+  rewards: torch.Size([2, 64])
+  terminals: torch.Size([2, 64])
+  episode_starts: torch.Size([2, 64])
+  latent_states:
+    deterministic: torch.Size([2, 64, 1024])
+    stochastic: torch.Size([2, 64, 16, 16])
+    logits: torch.Size([2, 64, 16, 16])
+
+2. Computing world model loss...
+World model loss computed successfully
+
+3. Getting imagination starts...
+
+Get imagination starts debug:
+Input shapes:
+  batch_size: 2
+  seq_len: 64
+  n_last: 15
+  deterministic: torch.Size([2, 64, 1024])
+  stochastic: torch.Size([2, 64, 16, 16])
+  logits: torch.Size([2, 64, 16, 16])
+Output shape for deterministic: torch.Size([30, 1024])
+Output shape for stochastic: torch.Size([30, 16, 16])
+Output shape for logits: torch.Size([30, 16, 16])
+Got imagination starts successfully
+Training:   0%|                               | 141/500000 [00:03<5:25:00, 25.63it/s, reward=-15.73]
+Step 0
+Replay buffer size: 141/64
+Episode reward so far: -15.73
+Training:   0%|                               | 142/500000 [00:03<5:25:12, 25.62it/s, reward=-15.73]
+=== Starting Parameter Update ===
+1. Sampling batch from buffer...
+Warning: Requested batch size 16 too large for current buffer size
+Reduced batch size to 2
+
+=== Replay Buffer Sampling ===
+Requested batch size: 2
+Current buffer size: 142
+Online queue size: 128
+Available online indices: 128
+Sampling complete
+Final sequence count: 2
+Batch shapes:
+  observations: torch.Size([2, 64, 18])
+  actions: torch.Size([2, 64, 4])
+  rewards: torch.Size([2, 64])
+  terminals: torch.Size([2, 64])
+  episode_starts: torch.Size([2, 64])
+  latent_states:
+    deterministic: torch.Size([2, 64, 1024])
+    stochastic: torch.Size([2, 64, 16, 16])
+    logits: torch.Size([2, 64, 16, 16])
+
+2. Computing world model loss...

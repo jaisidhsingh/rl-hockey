@@ -233,23 +233,32 @@ class RSSM(nn.Module):
         return (priors, posteriors), torch.stack(features, dim=0)
 
     def imagine(self, init_state, actor, horizon):
+        """Modified RSSM imagine method to handle continuous actions"""
+        features = []
+        actions = []
         stoch, deter = init_state
-        features, actions = [], []
-        B = deter.size(0)
         for _ in range(horizon):
-            feature = torch.cat([deter, stoch.view(B, -1)], dim=-1)
+            # Get feature from current state
+            feature = torch.cat([deter, stoch.view(stoch.size(0), -1)], dim=-1)
             features.append(feature)
-            action_dist = actor(feature)
-            action = action_dist.sample()
+            
+            # Get action from actor (continuous)
+            action = actor(feature).sample()
             actions.append(action)
-            action_onehot = F.one_hot(action, num_classes=self.action_dim).float()
-            stoch_flat = stoch.view(B, -1)
-            x = torch.cat([stoch_flat, action_onehot], dim=-1)
+            
+            # Update state (no need for one-hot with continuous actions)
+            stoch_flat = stoch.view(stoch.size(0), -1)
+            x = torch.cat([stoch_flat, action], dim=-1)
             deter = self.gru(x, deter)
-            prior_input = torch.cat([deter, action_onehot], dim=-1)
-            prior_logits = self.prior_net(prior_input).view(B, self.latent_dim, self.num_classes)
+            prior_input = torch.cat([deter, action], dim=-1)
+            prior_logits = self.prior_net(prior_input).view(
+                stoch.size(0), self.latent_dim, self.num_classes
+            )
             stoch = F.gumbel_softmax(prior_logits, tau=1.0, hard=True)
-        return torch.stack(features, dim=0), torch.stack(actions, dim=0)
+
+        features = torch.stack(features, dim=0)
+        actions = torch.stack(actions, dim=0)
+        return features, actions
 
 class WorldModel(nn.Module):
     def __init__(self, in_channels, action_dim, embed_dim, latent_dim, num_classes, deter_dim, obs_shape, lr=1e-4, eps=1e-8):
@@ -409,7 +418,11 @@ class DreamerV3:
         rewards = rewards.detach()
         terminals = terminals.detach()
         T, B, feat_dim = features.shape
-        values = self.critic(features.reshape(-1, feat_dim)).reshape(T, B, -1)
+        
+        # Compute values
+        values = self.critic(features.reshape(-1, feat_dim)).reshape(T, B, 1)
+        
+        # Compute returns
         discounts = self.config.discount * (1 - torch.sigmoid(terminals))
         returns = []
         future_return = values[-1]
@@ -417,20 +430,33 @@ class DreamerV3:
             future_return = rewards[t] + discounts[t] * future_return
             returns.insert(0, future_return)
         returns = torch.stack(returns, dim=0)
+        
+        # Update critic
         critic_loss = F.mse_loss(symlog(values), symlog(returns.detach()))
         self.critic_optimizer.zero_grad()
         critic_loss.backward()
         self.critic_optimizer.step()
+        
+        # Update actor
         features_flat = features.reshape(-1, feat_dim)
-        actions_flat = actions.reshape(-1)
+        actions_flat = actions.reshape(-1, self.action_dim)  # Reshape keeping action dimension
         action_dist = self.actor(features_flat)
-        log_probs = action_dist.log_prob(actions_flat).reshape(T, B, 1)
+        
+        # Calculate log probs for all action dimensions
+        log_probs = action_dist.log_prob(actions_flat)  # Shape: [T*B, action_dim]
+        log_probs = log_probs.sum(-1, keepdim=True)  # Sum across action dimensions
+        log_probs = log_probs.reshape(T, B, 1)  # Reshape to original sequence shape
+        
+        # Calculate entropy and advantages
         entropy = action_dist.entropy().mean()
         advantages = returns.detach() - values.detach()
+        
+        # Calculate actor loss
         actor_loss = -(log_probs * advantages + self.config.entropy_coef * entropy).mean()
         self.actor_optimizer.zero_grad()
         actor_loss.backward()
         self.actor_optimizer.step()
+        
         return {
             "actor_loss": actor_loss.item(),
             "critic_loss": critic_loss.item(),

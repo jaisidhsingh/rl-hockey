@@ -63,10 +63,10 @@ def self_play_train():
     # Training parameters
     max_timesteps = 1_000_000
     batch_size = 256
-    warmup_steps = 5_000
+    warmup_steps = 25_000
     eval_freq = 2_500
     updates_per_step = 1
-    save_opponent_freq = 100_000  # How often to save opponent versions
+    save_opponent_freq = 50_000  # How often to save opponent versions
 
     wandb.login()
     wandb.init(

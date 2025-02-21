@@ -19,7 +19,7 @@ up-self-play-sac:
 	scp -r "sac_self_play.sbatch" "stud369@login2.tcml.uni-tuebingen.de:~"
 
 fetch:
-	scp -r "stud369@login2.tcml.uni-tuebingen.de:~/agents" .
+	scp -r "stud369@login2.tcml.uni-tuebingen.de:~/agents" tcml-agents
 
 local-self-play:
 	python sac_self_play.py --initial_checkpoint agents/sac_agent.pt --n_step_td 3 --prioritized_replay

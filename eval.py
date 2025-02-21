@@ -22,13 +22,13 @@ def play_hockey(player1, player2, num_episodes=1000, render=False):
     print(f"Player 1 avg reward: {np.mean(rewards)}")
 
 
-def test_all_agents(player, num_episodes=1000, render=False):
-    agent_picker = AgentPicker("agents/checkpoints")
+def test_all_agents(player, opponent_dir, num_episodes=1000, render=False, uniform=False):
+    agent_picker = AgentPicker(opponent_dir)
 
     agent_picker.init_agents(player)
 
     for i in tqdm(range(num_episodes), desc="Playing against other agents:"):
-        opponent, idx = agent_picker.pick_agent()
+        opponent, idx = agent_picker.pick_agent(uniform=uniform)
         reward, result = play(player, opponent, render=render)
         agent_picker.update_agent_info(idx, result)
     
@@ -36,14 +36,14 @@ def test_all_agents(player, num_episodes=1000, render=False):
 
 
 def main():
-    agent1_path = "agents/sac_agent_sp150000.pt"
-    agent2_path = "agents/sac_agent.pt"
+    agent1_path = "agents/sac_agent_sp1M.pt"
+    agent2_path = "agents/sac_agent_sp1M_mixed.pt"
 
     player1 = load_agent(agent1_path)
     player2 = load_agent(agent2_path)
 
-    # play_hockey(player1, player2, num_episodes=100, render=True)
-    test_all_agents(player1, num_episodes=1000)
+    # play_hockey(player2, player1, num_episodes=100, render=True)
+    test_all_agents(player1, opponent_dir="agents", num_episodes=100, uniform=True)
 
 
 if __name__ == "__main__":

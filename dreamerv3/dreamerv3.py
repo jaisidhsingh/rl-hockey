@@ -40,118 +40,108 @@ class DreamerV3Config:
         if self.embedding_size is None:
             self.embedding_size = self.hidden_size
         
-        # Ensure all dimensions are consistent
+        # Create RSSM config with all required dimensions
         self.rssm = RSSMConfig(
             action_size=self.action_size,
-            deterministic_size=self.rssm_state_size,
-            stochastic_size=self.stochastic_size,
-            class_size=self.class_size,
             hidden_size=self.hidden_size,
-            learning_rate=self.learning_rate,
-            batch_size=self.batch_size,
+            deterministic_size=self.rssm_state_size,     # From constructor
+            stochastic_size=self.stochastic_size,        # From constructor
+            class_size=self.class_size,                  # From constructor
             device=self.device,
-            sequence_length=self.sequence_length,
-            imagination_horizon=self.horizon_length,  # Match horizon_length
+            learning_rate=self.learning_rate,
             unimix=self.unimix,
-            free_nats=self.free_nats,
-            beta_dyn=self.beta_dyn,
-            beta_rep=self.beta_rep
+            free_nats=self.free_nats
         )
         
+        # Calculate total feature size from RSSM dimensions
+        feature_size = self.rssm.deterministic_size + (self.rssm.stochastic_size * self.rssm.class_size)
+        
+        # Create World Model config
         self.world_model = WorldModelConfig(
             obs_shape=self.obs_shape,
             action_size=self.action_size,
             rssm=self.rssm,
-            embedding_size=self.hidden_size,  # Use base hidden size
+            embedding_size=self.hidden_size,
             encoder_hidden_size=self.hidden_size,
             decoder_hidden_size=self.hidden_size
         )
         
+        # Create Actor Critic config with correct feature size
         self.actor_critic = ActorCriticConfig(
             action_size=self.action_size,
             action_discrete=self.action_discrete,
-            actor_state_size=self.rssm_state_size + self.stochastic_size * self.class_size,
-            critic_state_size=self.rssm_state_size + self.stochastic_size * self.class_size,
+            actor_state_size=feature_size,    # Use computed feature size
+            critic_state_size=feature_size,   # Use same feature size
             learning_rate=self.learning_rate,
             device=self.device
         )
 
 class DreamerV3(nn.Module):
-   """Main DreamerV3 agent implementing world model based reinforcement learning."""
-   
-   def __init__(self, config: DreamerV3Config):
-       super().__init__()
-       self.config = config
-       self.device = config.device
-       
-       # Validate dimensions
-       feature_size = (config.rssm_state_size + 
+    """Main DreamerV3 agent implementing world model based reinforcement learning."""
+    
+    def __init__(self, config: DreamerV3Config):
+        super().__init__()
+        self.config = config
+        self.device = config.device
+        
+        # Calculate expected feature size from RSSM
+        feature_size = (config.rssm_state_size + 
                        config.stochastic_size * config.class_size)
-       
-       assert feature_size == (config.actor_critic.actor_state_size and 
-                              config.actor_critic.critic_state_size), \
-           "Actor/Critic state size must match RSSM feature size"
-       
-       # Initialize components
-       self.world_model = WorldModel(config.world_model).to(self.device)
-       self.actor = Actor(config.actor_critic).to(self.device)
-       self.critic = Critic(config.actor_critic).to(self.device)
-       
-       # Initialize replay buffer
-       self.replay_buffer = ReplayBuffer(
-           capacity=config.replay_buffer_size,
-           sequence_length=config.sequence_length,  # Use from config
-           action_size=config.action_size,
-           obs_shape=config.obs_shape,
-           latent_state_size=self.world_model.rssm.state_size,
-           device=self.device
-       )
-       
-       # Initialize training state
-       self.training = True
-       self.train_step = 0
-       # Initialize last state and action for action selection
-       self.last_state = None
-       self.last_action = None
-       self.last_state = None
+        
+        # Validate dimensions match for both actor and critic
+        assert feature_size == config.actor_critic.actor_state_size, \
+            f"Actor state size ({config.actor_critic.actor_state_size}) must match RSSM feature size ({feature_size})"
+        assert feature_size == config.actor_critic.critic_state_size, \
+            f"Critic state size ({config.actor_critic.critic_state_size}) must match RSSM feature size ({feature_size})"
+        
+        # Initialize components
+        self.world_model = WorldModel(config.world_model).to(self.device)
+        self.actor = Actor(config.actor_critic).to(self.device)
+        self.critic = Critic(config.actor_critic).to(self.device)
+        
+        # Initialize training state
+        self.training = True
+        self.train_step = 0
+        self.last_state = None
+        self.last_action = None
 
-   def get_initial_state(self) -> Dict[str, torch.Tensor]:
-       """Get initial state for new episode."""
-       return self.world_model.rssm.initial_state(batch_size=1)
+    def get_initial_state(self) -> Dict[str, torch.Tensor]:
+        """Get initial state for new episode."""
+        return self.world_model.rssm.initial(batch_size=1)  # Use the 'initial' method
 
-   @torch.no_grad()
-   def select_action(self, obs: np.ndarray) -> np.ndarray:
-       """Select action given observation."""
-       # Convert observation to tensor and ensure batch dimension
-       obs = torch.as_tensor(obs, device=self.device).unsqueeze(0)  # [1, obs_size]
-       
-       # Initialize state if needed
-       if self.last_state is None:
-           self.last_state = self.get_initial_state()
-           self.last_action = torch.zeros((1, self.config.action_size), device=self.device)
-       
-       # Encode observation
-       embed = self.world_model.encode_obs(obs)
-       
-       # Update state using world model with proper boolean tensor
-       post, _ = self.world_model.rssm.forward(
-           prev_state=self.last_state,
-           prev_action=self.last_action,
-           embed=embed,
-           is_first=torch.ones(1, device=self.device, dtype=torch.bool)  # Change to boolean
-       )
-       
-       # Get features and select action
-       features = self.world_model.rssm.get_feature(post)
-       action = self.actor.get_actions(features)
-       
-       # Update tracking
-       self.last_state = post
-       self.last_action = action
-       
-       return action.cpu().numpy()[0]
+    @torch.no_grad()
+    def select_action(self, obs: np.ndarray) -> np.ndarray:
+        """Select action given observation."""
+        # Convert observation to tensor and ensure batch dimension
+        obs = torch.as_tensor(obs, device=self.device).unsqueeze(0)  # [1, obs_size]
+        
+        # Initialize state if needed
+        if self.last_state is None:
+            self.last_state = self.get_initial_state()
+            self.last_action = torch.zeros((1, self.config.action_size), device=self.device)
+        
+        # Encode observation
+        embed = self.world_model.encode_obs(obs)
+        
+        # Update state using world model
+        post, _ = self.world_model.rssm.observe(
+            prev_state=self.last_state,
+            embed=embed,
+            actions=self.last_action,
+            is_first=torch.ones(1, device=self.device, dtype=torch.bool)
+        )
+        
+        # Get features and select action
+        features = self.world_model.rssm.get_feature(post)
+        action = self.actor.get_actions(features)
+        
+        # Update tracking
+        self.last_state = post
+        self.last_action = action
+        
+        return action.cpu().numpy()[0]
 
-   def observe(self, obs: np.ndarray, action: np.ndarray, reward: float, done: bool) -> None:
+    def observe(self, obs: np.ndarray, action: np.ndarray, reward: float, done: bool) -> None:
        """Add observation to replay buffer."""
        # Store transition with current state
        latent_state = None
@@ -174,7 +164,7 @@ class DreamerV3(nn.Module):
            self.last_state = None
            self.last_action = None
 
-   def update_parameters(self, batch_size: Optional[int] = None) -> Dict[str, float]:
+    def update_parameters(self, batch_size: Optional[int] = None) -> Dict[str, float]:
        """Perform single training step."""
        try:
            batch_size = batch_size or self.config.batch_size
@@ -276,18 +266,18 @@ class DreamerV3(nn.Module):
            print(traceback.format_exc())
            raise
 
-   def train(self, training: bool = True) -> None:
+    def train(self, training: bool = True) -> None:
        """Set training mode."""
        self.training = training
        self.world_model.train(training)
        self.actor.train(training)
        self.critic.train(training)
 
-   def eval(self) -> None:
+    def eval(self) -> None:
        """Set evaluation mode."""
        self.train(False)
 
-   def save(self, path: Union[str, pathlib.Path]) -> None:
+    def save(self, path: Union[str, pathlib.Path]) -> None:
        """Save model to path."""
        torch.save({
            'world_model': self.world_model.state_dict(),
@@ -297,7 +287,7 @@ class DreamerV3(nn.Module):
            'train_step': self.train_step
        }, path)
 
-   def load(self, path: Union[str, pathlib.Path]) -> None:
+    def load(self, path: Union[str, pathlib.Path]) -> None:
        """Load model from path."""
        checkpoint = torch.load(path)
        self.world_model.load_state_dict(checkpoint['world_model'])
@@ -305,7 +295,7 @@ class DreamerV3(nn.Module):
        self.critic.load_state_dict(checkpoint['critic'])
        self.train_step = checkpoint['train_step']
 
-   def to(self, device: Union[str, torch.device]) -> 'DreamerV3':
+    def to(self, device: Union[str, torch.device]) -> 'DreamerV3':
        """Move agent to device."""
        super().to(device)
        self.device = device

@@ -14,26 +14,43 @@ import hockey.hockey_env as h_env
 from dreamerv3 import DreamerV3, DreamerV3Config
 
 def get_model_size_config(size_name: str) -> dict:
-    """Get model architecture parameters based on model size."""
+    """Get model architecture parameters based on model size.
+    From paper Table 3:
+    - Hidden size is the base dimension
+    - Recurrent size is 4x hidden size
+    - Latent size is hidden_size/16 (both stochastic_size and class_size)
+    """
     sizes = {
         "12M": {
-            "hidden_size": 256,          # Base hidden size for all networks
-            "recurrent_size": 1024,      # RSSM deterministic state size
-            "latent_size": 16,           # Both stochastic_size and class_size
+            "hidden_size": 256,          # Base hidden size
+            "recurrent_size": 1024,      # 4x hidden size
+            "latent_size": 16,           # hidden_size/16
         },
         "25M": {
             "hidden_size": 384,
-            "recurrent_size": 3072,
+            "recurrent_size": 1536,
             "latent_size": 24,
         },
         "50M": {
             "hidden_size": 512,
-            "recurrent_size": 4096,
+            "recurrent_size": 2048,
             "latent_size": 32,
         },
-        "100M": {"hidden_size": 768, "recurrent_size": 6144, "latent_size": 48},
-        "200M": {"hidden_size": 1024, "recurrent_size": 8192, "latent_size": 64},
-        "400M": {"hidden_size": 1536, "recurrent_size": 12288, "latent_size": 96},
+        "100M": {
+            "hidden_size": 768,
+            "recurrent_size": 3072,
+            "latent_size": 48,
+        },
+        "200M": {
+            "hidden_size": 1024,
+            "recurrent_size": 4096,
+            "latent_size": 64,
+        },
+        "400M": {
+            "hidden_size": 1536,
+            "recurrent_size": 6144,
+            "latent_size": 96,
+        },
     }
     assert size_name in sizes, f"Model size must be one of {list(sizes.keys())}"
     return sizes[size_name]
@@ -121,7 +138,7 @@ def main():
     device = 'cuda' if torch.cuda.is_available() and args.device == 'cuda' else 'cpu'
     print(f"Using {device.upper()} device")
     
-    # Now create config with environment info
+        # Create config with environment info
     config = DreamerV3Config(
         # Required
         obs_shape=env.observation_space.shape,
@@ -130,9 +147,9 @@ def main():
         
         # Architecture (from model_config)
         hidden_size=model_config["hidden_size"],
-        rssm_state_size=model_config["recurrent_size"],
-        stochastic_size=model_config["latent_size"],
-        class_size=model_config["latent_size"],
+        rssm_state_size=model_config["recurrent_size"],     # 4x hidden size
+        stochastic_size=model_config["latent_size"],        # hidden_size/16
+        class_size=model_config["latent_size"],             # Same as stochastic
         
         # Training
         sequence_length=64,    # From paper
@@ -147,7 +164,7 @@ def main():
         beta_dyn=1.0,
         beta_rep=0.1,
     )
-    
+
     # Initialize wandb
     print("Setting up wandb...")
     wandb.init(

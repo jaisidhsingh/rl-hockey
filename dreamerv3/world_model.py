@@ -89,56 +89,49 @@ class DensePredictor(nn.Module):
 
 class WorldModel(nn.Module):
    def __init__(self, config: WorldModelConfig):
-       super().__init__()
-       
-       # Validate dimensions
-       input_size = np.prod(config.obs_shape)
-       rssm_feature_size = (config.rssm.deterministic_size + 
-                          config.rssm.stochastic_size * config.rssm.class_size)
-       
-       assert config.embedding_size > 0, "Embedding size must be positive"
-       assert input_size > 0, "Observation shape product must be positive"
-       assert config.encoder_hidden_size > 0, "Encoder hidden size must be positive"
-       assert config.decoder_hidden_size > 0, "Decoder hidden size must be positive"
-       assert rssm_feature_size > 0, "RSSM feature size must be positive"
-       
-       self.config = config
-       
-       # Core RSSM model
-       self.rssm = RSSM(config.rssm)
-       
-       # Vector observation encoder/decoder
-       input_size = np.prod(config.obs_shape)
-       self.encoder = VectorEncoder(
-           input_size=input_size,
-           hidden_size=config.encoder_hidden_size,
-           embedding_size=config.embedding_size,
-       )
-       self.decoder = VectorDecoder(
-           output_size=input_size,
-           hidden_size=config.decoder_hidden_size,
-           input_size=self.rssm.state_size['deterministic'][0] + 
-                     self.rssm.state_size['stochastic'][0] * self.rssm.state_size['stochastic'][1]
-       )
-       
-       # Reward and continuation predictors
-       self.reward_predictor = DensePredictor(
-           input_size=self.rssm.state_size['deterministic'][0] + 
-                     self.rssm.state_size['stochastic'][0] * self.rssm.state_size['stochastic'][1],
-           dist='symlog_disc'
-       )
-       self.discount_predictor = DensePredictor(
-           input_size=self.rssm.state_size['deterministic'][0] + 
-                     self.rssm.state_size['stochastic'][0] * self.rssm.state_size['stochastic'][1],
-           dist='binary'
-       )
-       
-       # Add LaProp optimizer
-       self.optimizer = LaProp(
-           self.parameters(),
-           lr=config.rssm.learning_rate,
-           eps=1e-20  # From paper
-       )
+        super().__init__()
+        
+        # Validate dimensions
+        input_size = np.prod(config.obs_shape)
+        
+        self.config = config
+        
+        # Core RSSM model
+        self.rssm = RSSM(config.rssm)
+        
+        # Get feature size for decoders
+        rssm_feature_size = self.rssm.get_feature_size()
+        
+        # Vector observation encoder/decoder
+        self.encoder = VectorEncoder(
+            input_size=input_size,
+            hidden_size=config.encoder_hidden_size,
+            embedding_size=config.embedding_size,
+        )
+        
+        self.decoder = VectorDecoder(
+            output_size=input_size,
+            hidden_size=config.decoder_hidden_size,
+            input_size=rssm_feature_size
+        )
+        
+        # Reward and continuation predictors
+        self.reward_predictor = DensePredictor(
+            input_size=rssm_feature_size,
+            dist='symlog_disc'
+        )
+        
+        self.discount_predictor = DensePredictor(
+            input_size=rssm_feature_size,
+            dist='binary'
+        )
+        
+        # Add LaProp optimizer
+        self.optimizer = LaProp(
+            self.parameters(),
+            lr=config.rssm.learning_rate,
+            eps=1e-20  # From paper
+        )
 
    def _extract_features(self, state: Dict[str, torch.Tensor]) -> torch.Tensor:
        """Extract feature tensor from state dictionary."""

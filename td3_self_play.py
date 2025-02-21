@@ -9,7 +9,6 @@ from collections import defaultdict, Counter
 from sac.sac import *
 from td3.td3 import *
 
-from sac.memory import ReplayMemory
 from utils.agent_picker import AgentPicker
 from utils.utils import play, load_agent
 
@@ -33,7 +32,6 @@ def evaluate_policy(player, opponent, eval_episodes=10):
 
 def self_play_train():
     parser = argparse.ArgumentParser()
-
     # Training parameters
     parser.add_argument('--max_timesteps', type=int, default=1_000_000,
                         help='Maximum number of training timesteps')
@@ -45,14 +43,10 @@ def self_play_train():
                         help='How often to evaluate the agent')
     parser.add_argument('--updates_per_step', type=int, default=1,
                         help='Number of training updates per environment step')
-    parser.add_argument('--n_step_td', type=int, default=1,
-                        help='n step temporal difference learning')
-    parser.add_argument('--prioritized_replay', action='store_true',
-                        help='Whether to use prioritized sampling from the replay buffer')
     
-    # Self-play specific parameters
-    parser.add_argument('--agent_name', type=str, default='sac_agent',
-                        help='Base name for saved agent checkpoints (default: sac_agent)')
+    # Self-play parameters
+    parser.add_argument('--agent_name', type=str, default='td3_agent',
+                        help='Base name for saved agent checkpoints (default: td3_agent)')
     parser.add_argument('--save_opponent_interval', type=int, default=50_000,
                         help='How often to save opponent versions')
     parser.add_argument('--checkpoint_dir', type=str, default='agents/self_play_pool')
@@ -70,11 +64,8 @@ def self_play_train():
     wandb.init(
         project="rl-self-play",
         config={
-            "algorithm": "SAC-SelfPlay",
-            "n_step_td": args.n_step_td,
-            "prioritized_replay": args.prioritized_replay,
+            "algorithm": "TD3-SelfPlay",
             "batch_size": args.batch_size,
-            "updates_per_step": args.updates_per_step,
             "save_opponent_interval": args.save_opponent_interval
         }
     )
@@ -86,11 +77,8 @@ def self_play_train():
     eval_opponent = load_agent(args.initial_checkpoint)
 
     # Initialize memory
-    memory = ReplayMemory(
-        capacity=1_000_000,
-        seed=123456,
-        n_steps=args.n_step_td,
-        prioritized=args.prioritized_replay
+    memory = ReplayBuffer(
+        max_size=1_000_000
     )
 
     # Initialize opponent pool and run initial evaluation
@@ -131,7 +119,7 @@ def self_play_train():
         next_state_opponent = env.obs_agent_two()
 
         # Store transition
-        memory.push(state, action, reward, next_state, done)
+        memory.add(state, action, reward, next_state, done)
 
         state = next_state
         state_opponent = next_state_opponent
@@ -141,7 +129,7 @@ def self_play_train():
         # Update parameters
         if len(memory) > args.batch_size and t >= args.warmup_steps:
             for _ in range(args.updates_per_step):
-                player.update_parameters(memory, args.batch_size, t)
+                player.train(memory, args.batch_size)
 
         # Log episode results and update opponent pool
         if done:

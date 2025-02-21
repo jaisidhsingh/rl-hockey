@@ -11,7 +11,7 @@ Twin delayed DDPG:
 python td3/td3.py
 ```
 
-The checkpoints will be saved inside `agents/`.
+The checkpoints will be saved inside `agents/`. There are already multiple checkpoints inside `agents/checkpoints`. Feel free to use them as opponents for self-play (see later).
 
 ## Evaluating agents
 
@@ -23,23 +23,23 @@ Look at them play against each other:
 
 ```
 agent1_path = "agents/sac_agent_sp1M.pt"
-    agent2_path = "agents/sac_agent_sp1M_mixed.pt"
+agent2_path = "agents/td3_agent.pt"
 
-    player1 = load_agent(agent1_path)
-    player2 = load_agent(agent2_path)
+player1 = load_agent(agent1_path)
+player2 = load_agent(agent2_path)
 
-    play_hockey(player2, player1, num_episodes=100, render=True)
+play_hockey(player2, player1, num_episodes=100, render=True)
 ```
 
 Or evaluate one agent against all other agents:
 
 ```
-agent_path = "agents/sac_agent_sp1M.pt"
+agent_path = "agents/td3_agent.pt"
 player = load_agent(agent1_path)
 test_all_agents(player, opponent_dir="agents", num_episodes=100, uniform=True)
 ```
 
-The output shows the win ratio of your player against the other agents.
+The output shows the win ratio of the other agents against your player. If all of them are negative, it means your player is probably the strongest agent.
 
 ```
 Agent 1: sac_agent_sp1M.pt, Avg result: 0.08, Play count: 26.0
@@ -51,14 +51,12 @@ Agent 0: sac_agent.pt, Avg result: -1.00, Play count: 28.0
 
 ## Self-play
 
-Currently only SAC self-play is supported. TD3 will be added soon.
-
 First, create a directory and put some agents (call them "opponents") inside. Then, choose a specific agent (call it "player") to train it against these other agents. Periodically, a version of the player will be saved to the directory, and appended to the list of opponents.
 
 The opponents are chosen at random every episode, and stronger opponents are chosen more frequently.
 
 ```
-python sac_self_play.py --initial_checkpoint <path/to/your/agent.pth> --checkpoint_dir <dir/containing/agents> --n_step_td 3 --prioritized_replay
+python sac_self_play.py --initial_checkpoint <path/to/your/agent.pth> --checkpoint_dir <dir/containing/agents>
 ```
 
 ## Weights and Biases

@@ -1,321 +1,532 @@
-from typing import Dict, Tuple, Optional, Union
+import gymnasium as gym
+import numpy as np
 import torch
 import torch.nn as nn
-import numpy as np
-from dataclasses import dataclass
-import pathlib
-import wandb
-import traceback  # Add at the top with other imports
+import torch.nn.functional as F
+import torch.optim as optim
+from collections import deque
+from torch.distributions import Categorical
+import warnings
 
-from .rssm import RSSMConfig
-from .world_model import WorldModel, WorldModelConfig 
-from .actor_critic import Actor, Critic, ActorCriticConfig
-from .replay_buffer import ReplayBuffer
+warnings.simplefilter("ignore")
 
-@dataclass
+def preprocess(image):
+    return (image / 255.0).astype(np.float32)
+
+def quantize(image):
+    return (image * 255).astype(np.uint8)
+
+def symlog(x):
+    return torch.sign(x) * torch.log(torch.abs(x) + 1)
+
+def symexp(x):
+    return torch.sign(x) * (torch.exp(torch.abs(x)) - 1)
+
+def twohot_encode(x, bins):
+    """Encode scalar x into twohot vector using given bins"""
+    x = x.unsqueeze(-1)
+    bins = bins.to(x.device)
+    k = torch.sum(bins < x, dim=-1)
+    k = torch.clamp(k, 0, len(bins)-2)
+    
+    lo = bins[k]
+    hi = bins[k+1] 
+    w_hi = (x - lo) / (hi - lo)
+    w_lo = 1 - w_hi
+    
+    output = torch.zeros(*x.shape[:-1], len(bins), device=x.device)
+    output.scatter_(-1, k.unsqueeze(-1), w_lo.unsqueeze(-1))
+    output.scatter_(-1, (k+1).unsqueeze(-1), w_hi.unsqueeze(-1))
+    return output
+
+def init_weights(m):
+    if isinstance(m, (nn.Conv2d, nn.ConvTranspose2d)):
+        nn.init.xavier_normal_(m.weight)
+        if m.bias is not None:
+            nn.init.zeros_(m.bias)
+    elif isinstance(m, nn.Linear):
+        nn.init.xavier_normal_(m.weight)
+        if m.bias is not None:
+            nn.init.zeros_(m.bias)
+
 class DreamerV3Config:
-    # Required - no defaults
-    obs_shape: tuple
-    action_size: int
-    hidden_size: int             
-    rssm_state_size: int      
-    stochastic_size: int        
-    class_size: int
-    
-    # Optional - with defaults
-    action_discrete: bool = False
-    embedding_size: Optional[int] = None
-    learning_rate: float = 4e-5
-    batch_size: int = 16
-    device: str = "cuda"
-    replay_buffer_size: int = 1_000_000
-    sequence_length: int = 64  # From paper
-    horizon_length: int = 15   # From paper
-    unimix: float = 0.01
-    free_nats: float = 0.0
-    beta_dyn: float = 0.5
-    beta_rep: float = 0.1
-    
-    def __post_init__(self):
-        if self.embedding_size is None:
-            self.embedding_size = self.hidden_size
+    def __init__(self, action_discrete, hidden_size, latent_dim, class_size, deter_dim, device='cuda', **kwargs):
+        # Environment specs
+        self.action_discrete = action_discrete  # False for hockey
         
-        # Create RSSM config with all required dimensions
-        self.rssm = RSSMConfig(
-            action_size=self.action_size,
-            hidden_size=self.hidden_size,
-            deterministic_size=self.rssm_state_size,     # From constructor
-            stochastic_size=self.stochastic_size,        # From constructor
-            class_size=self.class_size,                  # From constructor
-            device=self.device,
-            learning_rate=self.learning_rate,
-            unimix=self.unimix,
-            free_nats=self.free_nats
-        )
+        # Architecture 
+        self.hidden_size = hidden_size  # Base hidden size
+        self.class_size = class_size  # Same as stochastic_size
+        self.embed_dim = hidden_size  # Same as hidden size
+        self.latent_dim = latent_dim 
+        self.deter_dim = deter_dim  # Same as rssm_state_size
+        # Training
+        self.sequence_length = 64  # From paper
+        self.batch_size = 16  # From paper
+        self.imagination_horizon = 15  # From paper
+        self.lr = 4e-5  # From paper
+        self.actor_lr = 4e-5
+        self.critic_lr = 4e-5
+        self.eps = 1e-20  # LaProp epsilon
+        self.capacity = 1_000_000  # 1M transitions
+        self.device = device
         
-        # Calculate total feature size from RSSM dimensions
-        feature_size = self.rssm.deterministic_size + (self.rssm.stochastic_size * self.rssm.class_size)
+        # Loss scales
+        self.kl_scale = 1.0  # KL loss scale
+        self.free_bits = 1.0  # Free bits
+        self.entropy_coef = 3e-4  # Actor entropy coefficient
         
-        # Create World Model config
-        self.world_model = WorldModelConfig(
-            obs_shape=self.obs_shape,
-            action_size=self.action_size,
-            rssm=self.rssm,
-            embedding_size=self.hidden_size,
-            encoder_hidden_size=self.hidden_size,
-            decoder_hidden_size=self.hidden_size
-        )
+        # Other parameters
+        self.discount = 0.997  # Discount factor
+        self.lambda_ = 0.95  # GAE lambda
         
-        # Create Actor Critic config with correct feature size
-        self.actor_critic = ActorCriticConfig(
-            action_size=self.action_size,
-            action_discrete=self.action_discrete,
-            actor_state_size=feature_size,    # Use computed feature size
-            critic_state_size=feature_size,   # Use same feature size
-            learning_rate=self.learning_rate,
-            device=self.device
-        )
+        # Override with any provided kwargs
+        for k, v in kwargs.items():
+            setattr(self, k, v)
 
-class DreamerV3(nn.Module):
-    """Main DreamerV3 agent implementing world model based reinforcement learning."""
-    
-    def __init__(self, config: DreamerV3Config):
+class ReplayBuffer:
+    def __init__(self, config, device):
+        self.capacity = config.capacity
+        self.batch_size = config.batch_size
+        self.sequence_length = config.sequence_length
+        self.episodes = []
+        self.current_episode = []
+        self.device = device
+
+    def store(self, obs, act, rew, next_obs, done):
+        self.current_episode.append({
+            "obs": obs,  # Remove quantize for vector inputs
+            "action": act,
+            "reward": rew,
+            "next_obs": next_obs,
+            "done": done,
+        })
+        if done:
+            if len(self.current_episode) >= self.sequence_length:
+                self.episodes.append(self.current_episode)
+            self.current_episode = []
+            if len(self.episodes) > self.capacity:
+                self.episodes.pop(0)
+
+    def sample(self, n_batches):
+        valid_episodes = [ep for ep in self.episodes if len(ep) >= self.sequence_length]
+        if not valid_episodes:
+            raise StopIteration
+        for _ in range(n_batches):
+            batch_obs, batch_actions, batch_rewards, batch_dones = [], [], [], []
+            for _ in range(self.batch_size):
+                ep = valid_episodes[np.random.randint(len(valid_episodes))]
+                start_idx = np.random.randint(0, len(ep) - self.sequence_length + 1)
+                seq = ep[start_idx : start_idx + self.sequence_length]
+                # Remove preprocess for vector inputs
+                obs_seq = [transition["obs"] for transition in seq]
+                action_seq = [transition["action"] for transition in seq]
+                reward_seq = [transition["reward"] for transition in seq]
+                done_seq = [transition["done"] for transition in seq]
+                batch_obs.append(np.array(obs_seq))
+                batch_actions.append(np.array(action_seq))
+                batch_rewards.append(np.array(reward_seq))
+                batch_dones.append(np.array(done_seq))
+            yield {
+                "observation": torch.tensor(np.array(batch_obs), dtype=torch.float32, device=self.device),
+                "action": torch.tensor(np.array(batch_actions), dtype=torch.float32, device=self.device),  # Changed to float32
+                "reward": torch.tensor(np.array(batch_rewards), dtype=torch.float32, device=self.device),
+                "done": torch.tensor(np.array(batch_dones), dtype=torch.float32, device=self.device),
+            }
+
+    def __len__(self):
+        return len(self.episodes)
+
+class ObservationEncoder(nn.Module):
+    def __init__(self, input_dim, embed_dim):
         super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(input_dim, 400),
+            nn.SiLU(),
+            nn.Linear(400, 400),
+            nn.SiLU(),
+            nn.Linear(400, embed_dim),
+            nn.SiLU(),
+        )
+        self.apply(init_weights)
+
+    def forward(self, x):
+        # Apply symlog to vector inputs
+        x = symlog(x)
+        return self.net(x)
+
+class ObservationDecoder(nn.Module):
+    def __init__(self, feature_dim, output_dim):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(feature_dim, 400),
+            nn.SiLU(),
+            nn.Linear(400, 400), 
+            nn.SiLU(),
+            nn.Linear(400, output_dim),
+        )
+        self.apply(init_weights)
+
+    def forward(self, x):
+        return self.net(x)
+
+class TransitionDecoder(nn.Module):
+    def __init__(self, in_dim, out_dim, dist_type="regression"):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(in_dim, 200), nn.ReLU(), nn.Linear(200, out_dim)
+        )
+        self.dist_type = dist_type
+        self.apply(init_weights)
+
+    def forward(self, features):
+        return self.net(features)
+
+class RSSM(nn.Module):
+    def __init__(self, action_dim, latent_dim, num_classes, deter_dim, embed_dim):
+        super().__init__()
+        self.action_dim = action_dim
+        self.latent_dim = latent_dim
+        self.num_classes = num_classes
+        self.deter_dim = deter_dim
+        self.embed_dim = embed_dim
+        # Update input dimension for continuous actions
+        self.gru = nn.GRUCell(latent_dim * num_classes + action_dim, deter_dim)
+        self.prior_net = nn.Sequential(
+            nn.Linear(deter_dim + action_dim, 200),
+            nn.ReLU(),
+            nn.Linear(200, latent_dim * num_classes),
+        )
+        self.posterior_net = nn.Sequential(
+            nn.Linear(deter_dim + embed_dim, 200),
+            nn.ReLU(),
+            nn.Linear(200, latent_dim * num_classes),
+        )
+        self.apply(init_weights)
+
+    def init_state(self, batch_size, device):
+        deter = torch.zeros(batch_size, self.deter_dim, device=device)
+        stoch = torch.zeros(batch_size, self.latent_dim, self.num_classes, device=device)
+        stoch[:, :, 0] = 1.0
+        return (stoch, deter)
+
+    def observe(self, embed_seq, action_seq, init_state):
+        T, B = action_seq.shape[:2]
+        priors, posteriors, features = [], [], []
+        stoch, deter = init_state
+        for t in range(T):
+            stoch_flat = stoch.view(B, -1)
+            x = torch.cat([stoch_flat, action_seq[t]], dim=-1)
+            deter = self.gru(x, deter)
+            prior_input = torch.cat([deter, action_seq[t]], dim=-1)
+            prior_logits = self.prior_net(prior_input).view(B, self.latent_dim, self.num_classes)
+            prior_dist = Categorical(logits=prior_logits)
+            post_input = torch.cat([deter, embed_seq[t]], dim=-1)
+            posterior_logits = self.posterior_net(post_input).view(B, self.latent_dim, self.num_classes)
+            posterior_dist = Categorical(logits=posterior_logits)
+            # Straight-through sampling from the categorical
+            stoch = F.gumbel_softmax(posterior_logits, tau=1.0, hard=True)
+            feature = torch.cat([deter, stoch.view(B, -1)], dim=-1)
+            features.append(feature)
+            priors.append(prior_dist)
+            posteriors.append(posterior_dist)
+        return (priors, posteriors), torch.stack(features, dim=0)
+
+    def imagine(self, init_state, actor, horizon):
+        stoch, deter = init_state
+        features, actions = [], []
+        B = deter.size(0)
+        for _ in range(horizon):
+            feature = torch.cat([deter, stoch.view(B, -1)], dim=-1)
+            features.append(feature)
+            action_dist = actor(feature)
+            action = action_dist.sample()
+            actions.append(action)
+            action_onehot = F.one_hot(action, num_classes=self.action_dim).float()
+            stoch_flat = stoch.view(B, -1)
+            x = torch.cat([stoch_flat, action_onehot], dim=-1)
+            deter = self.gru(x, deter)
+            prior_input = torch.cat([deter, action_onehot], dim=-1)
+            prior_logits = self.prior_net(prior_input).view(B, self.latent_dim, self.num_classes)
+            stoch = F.gumbel_softmax(prior_logits, tau=1.0, hard=True)
+        return torch.stack(features, dim=0), torch.stack(actions, dim=0)
+
+class WorldModel(nn.Module):
+    def __init__(self, in_channels, action_dim, embed_dim, latent_dim, num_classes, deter_dim, obs_shape, lr=1e-4, eps=1e-8):
+        super().__init__()
+        # Change input channels to be the first dimension of obs_shape
+        self.encoder = ObservationEncoder(obs_shape[0], embed_dim)
+        self.rssm = RSSM(action_dim, latent_dim, num_classes, deter_dim, embed_dim)
+        feature_dim = deter_dim + latent_dim * num_classes
+        # Change obs_size to obs_shape[0] for vector inputs
+        self.decoder = ObservationDecoder(feature_dim, obs_shape[0])
+        self.reward_decoder = TransitionDecoder(feature_dim, 1)
+        self.continue_decoder = TransitionDecoder(feature_dim, 1)
+        self.optimizer = optim.Adam(self.parameters(), lr=lr, eps=eps)
+
+    def observe(self, observations, actions):
+        T, B = observations.shape[:2]
+        obs_flat = observations.reshape(T * B, *observations.shape[2:])
+        embed = self.encoder(obs_flat).view(T, B, -1)
+        init_state = self.rssm.init_state(B, observations.device)
+        (priors, posteriors), features = self.rssm.observe(embed, actions, init_state)
+        feat_dim = features.size(-1)
+        features_flat = features.view(T * B, feat_dim)
+        recon = self.decoder(features_flat).view(T, B, *observations.shape[2:])
+        reward_pred = self.reward_decoder(features_flat)
+        continue_pred = self.continue_decoder(features_flat)
+        return (priors, posteriors), features, recon, reward_pred, continue_pred
+
+    def imagine(self, init_state, actor, horizon):
+        features, actions = self.rssm.imagine(init_state, actor, horizon)
+        T, B, feat_dim = features.shape
+        features_flat = features.view(T * B, feat_dim)
+        reward_pred = self.reward_decoder(features_flat)
+        continue_pred = self.continue_decoder(features_flat)
+        return features, actions, reward_pred, continue_pred
+
+    def decode(self, features):
+        return self.decoder(features)
+
+class Actor(nn.Module):
+    def __init__(self, feature_dim, action_size):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(feature_dim, 400),
+            nn.SiLU(),
+            nn.Linear(400, 400),
+            nn.SiLU(),
+            nn.Linear(400, 2 * action_size)  # Mean and log_std
+        )
+        self.apply(init_weights)
+        
+    def forward(self, x):
+        x = self.net(x)
+        mean, log_std = x.chunk(2, dim=-1)
+        log_std = torch.clamp(log_std, -10, 2)
+        std = log_std.exp()
+        dist = torch.distributions.Normal(mean, std)
+        return dist
+
+class Critic(nn.Module):
+    def __init__(self, feature_dim):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(feature_dim, 200), nn.ReLU(), nn.Linear(200, 1)
+        )
+        self.apply(init_weights)
+
+    def forward(self, x):
+        return self.net(x)
+
+class DreamerV3:
+    def __init__(self, obs_shape, action_dim, config):
+        self.obs_shape = obs_shape
+        self.action_dim = action_dim
         self.config = config
+        self.replay_buffer = ReplayBuffer(config, config.device)
         self.device = config.device
         
-        # Calculate expected feature size from RSSM
-        feature_size = (config.rssm_state_size + 
-                       config.stochastic_size * config.class_size)
-        
-        # Validate dimensions match for both actor and critic
-        assert feature_size == config.actor_critic.actor_state_size, \
-            f"Actor state size ({config.actor_critic.actor_state_size}) must match RSSM feature size ({feature_size})"
-        assert feature_size == config.actor_critic.critic_state_size, \
-            f"Critic state size ({config.actor_critic.critic_state_size}) must match RSSM feature size ({feature_size})"
-        
-        # Initialize components
-        self.world_model = WorldModel(config.world_model).to(self.device)
-        self.actor = Actor(config.actor_critic).to(self.device)
-        self.critic = Critic(config.actor_critic).to(self.device)
-        
-        # Initialize training state
-        self.training = True
-        self.train_step = 0
-        self.last_state = None
-        self.last_action = None
+        # Create world model with proper obs_shape
+        self.world_model = WorldModel(
+            obs_shape[0],  # in_channels (18 for hockey)
+            action_dim,    # action dimension (4 for hockey)
+            config.embed_dim,
+            config.latent_dim,
+            config.class_size,
+            config.deter_dim,
+            obs_shape,     # pass full obs_shape
+            lr=config.lr,
+            eps=config.eps
+        ).to(self.device)
+        feature_dim = config.deter_dim + config.latent_dim * config.num_classes
+        self.actor = Actor(feature_dim, action_dim).to(self.device)
+        self.critic = Critic(feature_dim).to(self.device)
+        self.actor_optimizer = optim.Adam(self.actor.parameters(), lr=config.actor_lr)
+        self.critic_optimizer = optim.Adam(self.critic.parameters(), lr=config.critic_lr)
+        self.hidden_state = None
 
-    def get_initial_state(self) -> Dict[str, torch.Tensor]:
-        """Get initial state for new episode."""
-        return self.world_model.rssm.initial(batch_size=1)  # Use the 'initial' method
+    def init_hidden_state(self):
+        self.hidden_state = self.world_model.rssm.init_state(1, self.device)
 
-    @torch.no_grad()
-    def select_action(self, obs: np.ndarray) -> np.ndarray:
-        """Select action given observation."""
-        # Convert observation to tensor and ensure batch dimension
-        obs = torch.as_tensor(obs, device=self.device).unsqueeze(0)  # [1, obs_size]
-        
-        # Initialize state if needed
-        if self.last_state is None:
-            self.last_state = self.get_initial_state()
-            self.last_action = torch.zeros((1, self.config.action_size), device=self.device)
-        
-        # Encode observation
-        embed = self.world_model.encode_obs(obs)
-        
-        # Update state using world model
-        post, _ = self.world_model.rssm.observe(
-            prev_state=self.last_state,
-            embed=embed,
-            actions=self.last_action,
-            is_first=torch.ones(1, device=self.device, dtype=torch.bool)
+    def act(self, observation):
+        obs = torch.tensor(observation, dtype=torch.float32, device=self.device).unsqueeze(0)
+        with torch.no_grad():
+            if self.hidden_state is None:
+                self.init_hidden_state()
+            stoch, deter = self.hidden_state
+            feature = torch.cat([deter, stoch.view(1, -1)], dim=-1)
+            action_dist = self.actor(feature)
+            action = action_dist.sample()
+            # Remove one-hot encoding, just use continuous action directly
+            stoch_flat = stoch.view(1, -1)
+            x = torch.cat([stoch_flat, action], dim=-1)
+            deter = self.world_model.rssm.gru(x, deter)
+            prior_input = torch.cat([deter, action], dim=-1)
+            prior_logits = self.world_model.rssm.prior_net(prior_input).view(
+                1, self.world_model.rssm.latent_dim, self.world_model.rssm.num_classes
+            )
+            stoch = F.gumbel_softmax(prior_logits, tau=1.0, hard=True)
+            self.hidden_state = (stoch, deter)
+        return action.cpu().numpy()[0]  # Return as numpy array
+
+    def store_transition(self, obs, action, reward, next_obs, done):
+        self.replay_buffer.store(obs, action, reward, next_obs, done)
+
+    def update_world_model(self, batch):
+        obs = batch["observation"]
+        # Remove one-hot encoding for actions
+        actions = batch["action"].float()
+        rewards = batch["reward"].unsqueeze(-1)
+        (priors, posteriors), features, recon, reward_pred, terminal_pred = self.world_model.observe(obs, actions)
+        recon_loss = F.mse_loss(recon, obs)
+        reward_loss = F.mse_loss(symlog(reward_pred), symlog(rewards.reshape(-1, 1)))
+        dones = batch["done"].unsqueeze(-1).permute(1, 0, 2)
+        terminal_loss = F.binary_cross_entropy_with_logits(terminal_pred, dones.reshape(-1, 1))
+        kl_loss = 0
+        T = len(priors)
+        for t in range(T):
+            kl_t = torch.distributions.kl_divergence(posteriors[t], priors[t]).mean()
+            # Ensure KL loss is at least free_bits (prevent over-regularization)
+            kl_loss += torch.max(kl_t, torch.tensor(self.config.free_bits, device=self.device))
+        kl_loss = kl_loss / T
+        world_loss = recon_loss + reward_loss + terminal_loss + self.config.kl_scale * kl_loss
+        self.world_model.optimizer.zero_grad()
+        world_loss.backward()
+        self.world_model.optimizer.step()
+        return {
+            "world_loss": world_loss.item(),
+            "recon_loss": recon_loss.item(),
+            "reward_loss": reward_loss.item(),
+            "terminal_loss": terminal_loss.item(),
+            "kl_loss": kl_loss.item()
+        }
+
+    def update_actor_and_critic(self, init_state):
+        horizon = self.config.imagination_horizon
+        features, actions, rewards, terminals = self.world_model.imagine(init_state, self.actor, horizon)
+        features = features.detach()  # detach world model gradients
+        rewards = rewards.detach()
+        terminals = terminals.detach()
+        T, B, feat_dim = features.shape
+        values = self.critic(features.reshape(-1, feat_dim)).reshape(T, B, -1)
+        discounts = self.config.discount * (1 - torch.sigmoid(terminals))
+        returns = []
+        future_return = values[-1]
+        for t in reversed(range(T)):
+            future_return = rewards[t] + discounts[t] * future_return
+            returns.insert(0, future_return)
+        returns = torch.stack(returns, dim=0)
+        critic_loss = F.mse_loss(symlog(values), symlog(returns.detach()))
+        self.critic_optimizer.zero_grad()
+        critic_loss.backward()
+        self.critic_optimizer.step()
+        features_flat = features.reshape(-1, feat_dim)
+        actions_flat = actions.reshape(-1)
+        action_dist = self.actor(features_flat)
+        log_probs = action_dist.log_prob(actions_flat).reshape(T, B, 1)
+        entropy = action_dist.entropy().mean()
+        advantages = returns.detach() - values.detach()
+        actor_loss = -(log_probs * advantages + self.config.entropy_coef * entropy).mean()
+        self.actor_optimizer.zero_grad()
+        actor_loss.backward()
+        self.actor_optimizer.step()
+        return {
+            "actor_loss": actor_loss.item(),
+            "critic_loss": critic_loss.item(),
+            "actor_entropy": entropy.item()
+        }
+
+    def train(self):
+        losses = {"world_loss": 0, "recon_loss": 0, "reward_loss": 0,
+                  "terminal_loss": 0, "kl_loss": 0,
+                  "actor_loss": 0, "critic_loss": 0, "actor_entropy": 0}
+
+        batch = next(iter(self.replay_buffer.sample(1)))
+
+        wm_losses = self.update_world_model(batch)
+        for key in ["world_loss", "recon_loss", "reward_loss", "terminal_loss", "kl_loss"]:
+            losses[key] += wm_losses[key]
+        B = batch["observation"].shape[0]
+        init_state = self.world_model.rssm.init_state(B, self.device)
+        ac_losses = self.update_actor_and_critic(init_state)
+        for key in ["actor_loss", "critic_loss", "actor_entropy"]:
+            losses[key] += ac_losses[key]
+
+        return losses
+    
+    def save_checkpoint(self, env_name):
+        torch.save(self.world_model.state_dict(), f"weights/{env_name}_world_model.pt")
+        torch.save(self.actor.state_dict(), f"weights/{env_name}_actor.pt")
+        torch.save(self.critic.state_dict(), f"weights/{env_name}_critic.pt")
+
+    def load_checkpoint(self, env_name):
+        self.world_model.load_state_dict(
+            torch.load(f"weights/{env_name}_world_model.pt")
         )
+        self.actor.load_state_dict(torch.load(f"weights/{env_name}_actor.pt"))
+        self.critic.load_state_dict(torch.load(f"weights/{env_name}_critic.pt"))
+
+def train_dreamer(args):
+    env = AtariEnv(args.env).make()
+    obs_shape = env.observation_space.shape
+    act_dim = env.action_space.n
+    save_prefix = args.env.split("/")[-1]
+    print(f"Env: {save_prefix}, Obs: {obs_shape}, Act: {act_dim}")
+    
+    config = Config(args)
+    
+    agent = DreamerV3(obs_shape, act_dim, config)
+    agent.world_model.apply(init_weights)
+    agent.actor.apply(init_weights)
+    agent.critic.apply(init_weights)
+    writer = SummaryWriter(log_dir=f"metrics/{save_prefix}")
+    
+    episode_history = []
+    
+    avg_reward_window = 50
+    score, step = 0, 0
+    state, _ = env.reset()
+    agent.init_hidden_state()
+    
+    while len(episode_history) < config.episodes:
+        action = agent.act(state)
+        next_state, reward, term, trunc, _ = env.step(action)
+        done = term or trunc
+        agent.store_transition(state, action, reward, next_state, done)
+        score += reward
         
-        # Get features and select action
-        features = self.world_model.rssm.get_feature(post)
-        action = self.actor.get_actions(features)
+        step += 1
         
-        # Update tracking
-        self.last_state = post
-        self.last_action = action
-        
-        return action.cpu().numpy()[0]
+        if done:
+            ep = len(episode_history)
+            episode_history.append(score)
+            if len(agent.replay_buffer) > config.min_buffer_size:
+                losses = agent.train()
+                writer.add_scalar("Loss/World", losses["world_loss"], ep)
+                writer.add_scalar("Loss/Recon", losses["recon_loss"], ep)
+                writer.add_scalar("Loss/Reward", losses["reward_loss"], ep)
+                writer.add_scalar("Loss/Terminal", losses["terminal_loss"], ep)
+                writer.add_scalar("Loss/KL", losses["kl_loss"], ep)
+                writer.add_scalar("Loss/Actor", losses["actor_loss"], ep)
+                writer.add_scalar("Loss/Critic", losses["critic_loss"], ep)
+                writer.add_scalar("Entropy/Actor", losses["actor_entropy"], ep)
+            writer.add_scalar("Reward/Score", score, ep)
+            avg_score = np.mean(episode_history[-avg_reward_window:])
+            writer.add_scalar("Reward/Average", avg_score, ep)
+            
+            print(f"[Ep {ep:05d}/{config.episodes}] Score = {score:.2f} Avg.Score = {avg_score:.2f}", end="\r")
+            
+            if score >= max(episode_history, default=-np.inf):
+                agent.save_checkpoint(save_prefix)
 
-    def observe(self, obs: np.ndarray, action: np.ndarray, reward: float, done: bool) -> None:
-       """Add observation to replay buffer."""
-       # Store transition with current state
-       latent_state = None
-       if self.last_state is not None:
-           # Detach and move to CPU before storing
-           latent_state = {
-               k: v.detach().cpu() for k, v in self.last_state.items()
-           }
-       
-       self.replay_buffer.add(
-           obs=obs,
-           action=action,
-           reward=reward,
-           terminal=done,
-           latent_state=latent_state
-       )
-       
-       # Reset state and action if episode ended
-       if done:
-           self.last_state = None
-           self.last_action = None
+            score = 0
+            agent.init_hidden_state()
+            state, _ = env.reset()
+        else:
+            state = next_state
 
-    def update_parameters(self, batch_size: Optional[int] = None) -> Dict[str, float]:
-       """Perform single training step."""
-       try:
-           batch_size = batch_size or self.config.batch_size
-           
-           if len(self.replay_buffer) < self.replay_buffer.sequence_length:
-               return {'world_model/kl': 0.0}
-           
-           # Sample batch silently
-           batch = self.replay_buffer.sample(batch_size)
-           
-           # Train world model silently
-           wm_losses, wm_states = self.world_model.compute_loss(
-               obs=batch['observations'],
-               actions=batch['actions'],
-               rewards=batch['rewards'],
-               discounts=1.0 - batch['terminals'].float(),
-               is_first=batch['episode_starts']
-           )
-           
-           wm_losses['world_model/total'].backward()
-           self.world_model.optimizer.step()
-           
-           # Get imagination starts
-           B = batch_size
-           K = min(self.config.horizon_length, batch['actions'].shape[1])
-           H = self.config.horizon_length
-           
-           init_states = self.world_model.rssm.get_imagination_starts(
-               wm_states['states'],
-               n_last=K
-           )
-           
-           # Imagine trajectories silently
-           with torch.no_grad():
-               state = init_states
-               imagined_states = []
-               imagined_actions = []
-               rewards = []
-               values = []
-               
-               features = self.world_model.rssm.get_feature(state)
-               
-               for _ in range(H):
-                   action_dist = self.actor(features)
-                   action = action_dist.sample()
-                   value = self.critic(features).mode().squeeze(-1)
-                   values.append(value)
-                   
-                   next_state, reward, discount = self.world_model.imagine_step(state, action)
-                   next_features = self.world_model.rssm.get_feature(next_state)
-                   
-                   imagined_states.append(next_features)
-                   imagined_actions.append(action)
-                   rewards.append(reward)
-                   
-                   state = next_state
-                   features = next_features
-               
-               # Stack time dimension
-               imagined_states = torch.stack(imagined_states, dim=1)
-               imagined_actions = torch.stack(imagined_actions, dim=1)
-               rewards = torch.stack(rewards, dim=1)
-               values = torch.stack(values, dim=1)
-               
-               # Compute returns
-               returns = compute_lambda_return(
-                   rewards=rewards,
-                   values=values,
-                   discount=0.997,
-                   lambda_=0.95
-               )
-           
-           # Train actor and critic silently
-           actor_metrics = self.actor.optimize(
-               features=imagined_states.detach(),
-               returns=returns.detach(),
-               actions=imagined_actions.detach()
-           )
-           
-           critic_metrics = self.critic.optimize(
-               features=imagined_states.detach(),
-               returns=returns.detach()
-           )
-
-           self.critic.update_target_network()  # Update every step
-           
-           return {
-               **wm_losses,
-               'actor/policy_loss': actor_metrics['policy_loss'],
-               'actor/entropy': actor_metrics['entropy'],
-               'critic/value_loss': critic_metrics['value_loss'],
-               'critic/target_value': critic_metrics['target_values']
-           }
-               
-       except Exception as e:
-           print(f"Error in update_parameters:")
-           print(f"Exception: {type(e).__name__}: {str(e)}")
-           print("Traceback:")
-           print(traceback.format_exc())
-           raise
-
-    def train(self, training: bool = True) -> None:
-       """Set training mode."""
-       self.training = training
-       self.world_model.train(training)
-       self.actor.train(training)
-       self.critic.train(training)
-
-    def eval(self) -> None:
-       """Set evaluation mode."""
-       self.train(False)
-
-    def save(self, path: Union[str, pathlib.Path]) -> None:
-       """Save model to path."""
-       torch.save({
-           'world_model': self.world_model.state_dict(),
-           'actor': self.actor.state_dict(),
-           'critic': self.critic.state_dict(),
-           'config': self.config,
-           'train_step': self.train_step
-       }, path)
-
-    def load(self, path: Union[str, pathlib.Path]) -> None:
-       """Load model from path."""
-       checkpoint = torch.load(path)
-       self.world_model.load_state_dict(checkpoint['world_model'])
-       self.actor.load_state_dict(checkpoint['actor'])
-       self.critic.load_state_dict(checkpoint['critic'])
-       self.train_step = checkpoint['train_step']
-
-    def to(self, device: Union[str, torch.device]) -> 'DreamerV3':
-       """Move agent to device."""
-       super().to(device)
-       self.device = device
-       self.world_model.to(device)
-       self.actor.to(device)
-       self.critic.to(device)
-       if self.last_state is not None:
-           self.last_state = {k: v.to(device) for k, v in self.last_state.items()}
-       if self.last_action is not None:
-            self.last_action = self.last_action.to(device)
-       return self
-
-def compute_lambda_return(rewards, values, discount=0.997, lambda_=0.95):
-    """More accurate lambda return calculation matching JAX impl."""
-    next_values = torch.cat([values[:, 1:], values[:, -1:]], dim=1)
-    inputs = rewards + discount * next_values * (1 - lambda_)
-    last = values[:, -1]
-    outputs = []
-    for t in reversed(range(rewards.shape[1])):
-        last = inputs[:, t] + discount * lambda_ * last
-        outputs.append(last)
-    returns = torch.stack(list(reversed(outputs)), dim=1)
-    return returns
+            
+    
+    print(f"\nFinished training. Final Avg.Score = {avg_score:.2f}")
+    writer.close()

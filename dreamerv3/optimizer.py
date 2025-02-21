@@ -75,8 +75,7 @@ class LaProp(Optimizer):
         return loss
 
 def adaptive_gradient_clipping(parameters, gradients, clip_factor=0.3, eps=1e-3):
-    """Match JAX AGC parameters exactly.
-    
+    """
     Args:
         parameters: Model parameters
         gradients: Dictionary of parameter gradients

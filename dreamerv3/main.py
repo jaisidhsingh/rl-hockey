@@ -3,11 +3,14 @@ import wandb
 import torch
 import numpy as np
 from pathlib import Path
-from tqdm.auto import tqdm  # Change to tqdm.auto
+from tqdm import tqdm
 import time
 import sys
 import functools
-print = functools.partial(print, flush=True)  # Force flushing of print statements
+# Override the built-in print function to force flushing of print statements.
+# This ensures that all print outputs are immediately visible, which is useful
+# for real-time logging and debugging, especially when running long training loops.
+print = functools.partial(print, flush=True)
 
 import hockey.hockey_env as h_env
 
@@ -49,10 +52,9 @@ def get_model_size_config(size_name: str) -> dict:
         "400M": {
             "hidden_size": 1536,
             "recurrent_size": 6144,
-            "latent_size": 96,
         },
     }
-    assert size_name in sizes, f"Model size must be one of {list(sizes.keys())}"
+    assert size_name in sizes, f"Invalid model size '{size_name}'. Model size must be one of {list(sizes.keys())}"
     return sizes[size_name]
 
 def parse_args():
@@ -104,11 +106,16 @@ def log_system_stats():
     return {}
 
 def print_cuda_memory():
+    """
+    Print the current CUDA memory status including allocated, cached, and max allocated memory.
+    This is useful for monitoring GPU memory usage during training.
+    """
     if torch.cuda.is_available():
         print(f"\nCUDA Memory Status:")
-        print(f"Allocated: {torch.cuda.memory_allocated(0)/1e6:.2f}MB")
-        print(f"Cached: {torch.cuda.memory_reserved(0)/1e6:.2f}MB")
-        print(f"Max allocated: {torch.cuda.max_memory_allocated(0)/1e6:.2f}MB")
+class DebugTqdm(tqdm):
+    """A custom tqdm progress bar that forces stdout flush to ensure prints are visible."""
+    print(f"Cached: {torch.cuda.memory_reserved(0)/1e6:.2f}MB")
+    print(f"Max allocated: {torch.cuda.max_memory_allocated(0)/1e6:.2f}MB")
 
 class DebugTqdm(tqdm):
     def __init__(self, *args, **kwargs):
@@ -121,52 +128,45 @@ class DebugTqdm(tqdm):
 
 def main():
     args = parse_args()
+    
+    # Create weights directory if it doesn't exist
+    Path("weights").mkdir(parents=True, exist_ok=True)
+    
     model_config = get_model_size_config(args.model_size)
     
-    # Create environments first
-    print("Creating environments...")
+    # Create environment
     env = h_env.HockeyEnv_BasicOpponent()
-    eval_env = h_env.HockeyEnv_BasicOpponent()
+
+    print(env.observation_space.shape)
+    print(env.action_space.shape[0])
     
     # Set seeds
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
     env.reset(seed=args.seed)
-    eval_env.reset(seed=args.seed)
     
-    # Verify CUDA setup
     device = 'cuda' if torch.cuda.is_available() and args.device == 'cuda' else 'cpu'
-    print(f"Using {device.upper()} device")
     
-        # Create config with environment info
+    # Create config matching environment dimensions
     config = DreamerV3Config(
-        # Required
-        obs_shape=env.observation_space.shape,
-        action_size=env.action_space.shape[0],
         action_discrete=False,
-        
-        # Architecture (from model_config)
         hidden_size=model_config["hidden_size"],
-        rssm_state_size=model_config["recurrent_size"],     # 4x hidden size
-        stochastic_size=model_config["latent_size"],        # hidden_size/16
-        class_size=model_config["latent_size"],             # Same as stochastic
-        
-        # Training
-        sequence_length=64,    # From paper
-        horizon_length=15,     # From paper
-        batch_size=args.batch_size,
-        learning_rate=args.learning_rate,
+        latent_dim=model_config["latent_size"],
+        num_classes=model_config["latent_size"],
+        class_size=model_config["latent_size"],
+        deter_dim=model_config["recurrent_size"],
         device=device,
-        
-        # Other parameters from paper
-        unimix=0.01,         # 1% uniform mixture
-        free_nats=1.0,       # Exactly 1.0 nat threshold
-        beta_dyn=1.0,
-        beta_rep=0.1,
+        capacity=1_000_000,  # 1M transitions
     )
 
+    # Create agent with correct initialization parameters
+    agent = DreamerV3(
+        obs_shape=env.observation_space.shape,  # (18,)
+        action_dim=env.action_space.shape[0],  # 4 with keep_mode
+        config=config
+    )
+    
     # Initialize wandb
-    print("Setting up wandb...")
     wandb.init(
         project="dreamerv3-hockey",
         config={
@@ -178,107 +178,60 @@ def main():
             "learning_rate": args.learning_rate,
             "batch_size": args.batch_size,
             "max_steps": args.max_steps,
-            "device": device
+            "device": device,
+            "env": "hockey",
         }
     )
     
-    # Create agent
-    print("Creating agent...")
-    agent = DreamerV3(config).to(device)
-    
-    # Training loop setup
+    # Training loop
     total_steps = 0
     episode_reward = 0
-    episode_steps = 0
     obs, _ = env.reset()
-    episode_count = 0
-    last_step_time = time.time()
     
-    # Single clean progress bar
-    progress = tqdm(
-        total=args.max_steps,
-        desc="Training",
-        ncols=80,
-        unit="steps",
-        leave=True
-    )
+    progress = tqdm(total=args.max_steps)
     
     while total_steps < args.max_steps:
-        try:
-            current_time = time.time()
+        # Get action and step environment
+        action = agent.act(obs)  # Remove symlog here since it's handled in encoder
+        next_obs, reward, terminated, truncated, info = env.step(action)
+        done = terminated or truncated
+        
+        # Store experience
+        agent.store_transition(obs, action, reward, next_obs, done)
+        
+        episode_reward += reward
+        total_steps += 1
+        
+        # Train if enough data
+        if len(agent.replay_buffer) >= config.batch_size * config.sequence_length:
+            metrics = agent.train()
             
-            # Environment interaction
-            action = agent.select_action(obs)
-            next_obs, reward, terminated, truncated, _ = env.step(action)
-            done = terminated or truncated
-            
-            # Store transition and update counters
-            agent.observe(obs, action, reward, done)
+            # Log metrics every 1000 steps
+            if total_steps % 1000 == 0:
+                wandb.log({
+                    'reward': episode_reward,
+                    'world_model_loss': metrics['world_loss'],
+                    'actor_loss': metrics['actor_loss'],
+                    'critic_loss': metrics['critic_loss'],
+                    'steps': total_steps,
+                })
+        
+        if done:
+            obs, _ = env.reset() 
+            episode_reward = 0
+        else:
             obs = next_obs
-            episode_reward += reward
-            episode_steps += 1
-            total_steps += 1
             
-            # Update progress bar every 50 steps
-            if total_steps % 50 == 0:
-                progress.set_postfix({
-                    'ep_reward': f'{episode_reward:.1f}',
-                    'buffer_size': len(agent.replay_buffer),
-                }, refresh=True)
-                progress.update(50)
-            
-            # Train agent when we have enough data
-            if len(agent.replay_buffer) >= agent.replay_buffer.sequence_length:
-                metrics = agent.update_parameters()
-                
-                # Log basic metrics every sequence length (64 steps)
-                if total_steps % config.sequence_length == 0:
-                    wandb.log({
-                        'training/episode_reward': episode_reward,
-                        'training/episode_length': episode_steps,
-                        'training/buffer_size': len(agent.replay_buffer),
-                        'training/episodes': episode_count,
-                        'performance/steps_per_second': config.sequence_length / (time.time() - current_time),
-                    }, step=total_steps)
-                
-                # Log detailed model metrics every batch update
-                # (sequence_length * batch_size = 1024 steps)
-                if total_steps % (config.sequence_length * config.batch_size) == 0:
-                    wandb.log({
-                        'world_model/total_loss': metrics.get('world_model/total', 0),
-                        'world_model/prediction_loss': metrics.get('world_model/prediction', 0),
-                        'world_model/dynamics_loss': metrics.get('world_model/dynamics', 0),
-                        'world_model/representation_loss': metrics.get('world_model/representation', 0),
-                        'actor/policy_loss': metrics.get('actor/policy_loss', 0),
-                        'actor/entropy': metrics.get('actor/entropy', 0),
-                        'critic/value_loss': metrics.get('critic/value_loss', 0),
-                        **log_system_stats()
-                    }, step=total_steps)
-                
-                last_step_time = current_time
-            
-            # Handle episode end silently
-            if done:
-                episode_count += 1
-                obs, _ = env.reset()
-                episode_reward = 0
-                episode_steps = 0
-                
-            # Save checkpoints silently
-            if total_steps % args.save_frequency == 0:
-                checkpoint_path = Path("checkpoints") / f"dreamerv3_{total_steps}.pt"
-                agent.save(checkpoint_path)
-                
-        except Exception as e:
-            progress.close()
-            wandb.finish()
-            raise e
+        # Update progress
+        progress.update(1)
+        
+        # Save periodically
+        if total_steps % args.save_frequency == 0:
+            agent.save_checkpoint(f"dreamer_hockey_{total_steps}.pt")
     
     progress.close()
     wandb.finish()
     env.close()
-    eval_env.close()
-    agent.save("dreamerv3_final.pt")
 
 if __name__ == "__main__":
     main()

@@ -18,7 +18,10 @@ class AgentPicker:
         self.init_episodes = 10
         self.scale = 3
 
-        print("Loaded the following agents: ", self.agent_names)
+        if len(self.agents) == 0:
+            print(f"Warning. No agents were initialized. The directory {agent_dir} might contain no agents.")
+        else:
+            print("Loaded the following agents: ", self.agent_names)
     
     def init_agents(self, player):
         for idx, agent in enumerate(self.agents):

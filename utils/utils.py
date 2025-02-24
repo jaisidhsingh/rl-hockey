@@ -12,11 +12,19 @@ def load_agent(path):
     return agent
 
 
-def play(player, opponent, render=False):
+def get_one_starting(game_mode="normal", probs=[0.5, 0.5]):
+    if game_mode == "normal":
+        return np.random.choice([True, False], p=probs)
+    elif game_mode == "defense":
+        return False
+    else:
+        return True
+
+
+def play(player, opponent, render=False, mode="normal"):
     env = h_env.HockeyEnv()
     rewards = 0
-    one_starting = np.random.choice([True, False])
-    obs, info = env.reset(one_starting=one_starting)
+    obs, info = env.reset(one_starting=get_one_starting(mode))
     obs_agent2 = env.obs_agent_two()
     for step in range(250):
         if render:

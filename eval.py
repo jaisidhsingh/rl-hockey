@@ -36,14 +36,14 @@ def test_all_agents(player, opponent_dir, num_episodes=1000, render=False, unifo
 
 
 def main():
-    agent1_path = "agents/sac_agent_sp1M.pt"
-    agent2_path = "agents/sac_agent_sp1M_mixed.pt"
+    agent1_path = "agents/td3_agent_sp1M(2)_1.pt"
+    agent2_path = "agents/sac_agent_strongest.pt"
 
     player1 = load_agent(agent1_path)
     player2 = load_agent(agent2_path)
 
-    # play_hockey(player2, player1, num_episodes=100, render=True)
-    test_all_agents(player1, opponent_dir="agents", num_episodes=100, uniform=True)
+    play_hockey(player1, player2, num_episodes=1000)
+    # test_all_agents(player1, opponent_dir="agents", num_episodes=1000, uniform=True)
 
 
 if __name__ == "__main__":

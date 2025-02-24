@@ -4,7 +4,7 @@
 #a) Define slurm job parameters
 ####
 
-#SBATCH --job-name=rl-sac
+#SBATCH --job-name=rl-td3
 
 #resources:
 
@@ -50,7 +50,7 @@
 #cnn_minst.py <model save path> <mnist data path>
 ####
 
-singularity run containers/container.sif python3 ~/sac/main.py --automatic_entropy_tuning --prioritized_replay --agent_name sac_agent
+singularity run containers/container.sif python3 ~/td3_self_play.py --checkpoint_dir agents/td3_self_play_pool2_3 --initial_checkpoint agents/td3_agent_sp1M.pt --save_opponent_interval 50000
 
 echo DONE!
 

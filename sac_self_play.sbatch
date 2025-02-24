@@ -50,7 +50,7 @@
 #cnn_minst.py <model save path> <mnist data path>
 ####
 
-singularity run containers/container.sif python3 ~/sac_self_play.py --automatic_entropy_tuning --prioritized_replay --n_step_td 3 --initial_checkpoint agents/sac_agent.pt --checkpoint_dir agents/self_play_pool --agent_name sac_agent
+singularity run containers/container.sif python3 ~/sac_self_play.py --n_step_td 3 --prioritized_replay --checkpoint_dir agents/sac_self_play_pool5_2 --initial_checkpoint agents/sac_agent_spstrong.pt --save_opponent_interval 50000 --uniform_opponent_selection
 
 echo DONE!
 

@@ -4,7 +4,13 @@ sac_agent.pt - 1M steps with 3 step TD and PER
 vanilla_sac_agent.pt - 1M steps
 
 # Agents trained with self play
-*sac_agent_sp1M.pt - base sac_agent.pt, 1M steps against sac_agent_{2, 4, 6, 8, 10}.pt
-sac_agent_sp1M_mixed.pt - base sac_agent.pt, 1M steps against sac_agent_{6, 8, 10}.pt and td3_agent_{6, 8, 10}.pt
+sac_agent_sp1M.pt - base sac_agent, 1M steps against sac_agent_{2, 4, 6, 8, 10}
+sac_agent_sp1M(2).pt - sac_agent_1.8M, 1M steps against sac_agent_1.8M, vanilla_sac_agent_2M and td3_agent_2M
+sac_agent_sp1M(3).pt - sac_agent_sp1M, 1M steps against all intermediates of sac_agent_sp1M and sac_agent_sp1M(2)
+*sac_agent_sp1M(4)_1.pt - sac_agent_sp1M, 1M steps against 1M steps against sac_agent_1.8M, vanilla_sac_agent_2M, td3_agent_2M, sac_agent_sp1M, sac_agent_sp1M(2) and sac_agent_sp1M(3)
 
-* - currently strongest
+td3_agent_sp1M.pt - base td3_agent, 1M steps against SAC and TD3 initial checkpoints
+*td3_agent_sp1M(2)_1.pt - td3_agent_sp1M, 1M steps against vanilla_sac_agent_2M, td3_agent_2M, sac_agent_sp1M, sac_agent_sp1M(2), sac_agent_sp1M(3) and sac_agent_sp1M(4)
+
+
+* - currently strongest: these are labelled as sac_agent_strongest.pt and td3_agent_strongest.pt

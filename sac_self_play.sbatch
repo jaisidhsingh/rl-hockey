@@ -32,12 +32,6 @@
 #SBATCH --output=job.%J.out
 # write the standard output to job.*jobID*.out
 
-#SBATCH --mail-type=ALL
-#write a mail if a job begins, ends, fails, gets requeued or stages out
-
-#SBATCH --mail-user=ting-jin.lean@student.uni-tuebingen.de
-# your mail address
-
 ####
 #b) copy all needed data to the jobs scratch folder
 ####

@@ -2,5 +2,3 @@ __pycache__
 .vscode
 .env
 wandb/
-sac_self_play_pool*/
-td3_self_play_pool*/

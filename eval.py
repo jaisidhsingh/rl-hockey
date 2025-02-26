@@ -54,7 +54,6 @@ def evaluate_all_agents(agents_dir="agents/", num_episodes=100):
     """
     
     # Initialize wandb
-    wandb.login(key="06c432da22d5e9e35fddc4c3d5febab30de45a02", verify=True)
     wandb.init(
         project="rl-self-play",
         entity="rl-project-2025",

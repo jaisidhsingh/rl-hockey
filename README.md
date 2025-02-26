@@ -22,7 +22,7 @@ python eval.py
 Look at them play against each other:
 
 ```
-agent1_path = "agents/sac_agent_sp1M.pt"
+agent1_path = "agents/sac_agent.pt"
 agent2_path = "agents/td3_agent.pt"
 
 player1 = load_agent(agent1_path)
@@ -31,22 +31,10 @@ player2 = load_agent(agent2_path)
 play_hockey(player2, player1, num_episodes=100, render=True)
 ```
 
-Or evaluate one agent against all other agents:
+Or evaluate all agents:
 
 ```
-agent_path = "agents/td3_agent.pt"
-player = load_agent(agent1_path)
-test_all_agents(player, opponent_dir="agents", num_episodes=100, uniform=True)
-```
-
-The output shows the win ratio of the other agents against your player. If all of them are negative, it means your player is probably the strongest agent.
-
-```
-Agent 1: sac_agent_sp1M.pt, Avg result: 0.08, Play count: 26.0
-Agent 3: td3_agent.pt, Avg result: -0.59, Play count: 37.0
-Agent 4: vanilla_sac_agent.pt, Avg result: -0.78, Play count: 27.0
-Agent 2: sac_agent_sp1M_mixed.pt, Avg result: -0.88, Play count: 32.0
-Agent 0: sac_agent.pt, Avg result: -1.00, Play count: 28.0
+evaluate_all_agents("agents_dir="agents/", num_episodes=1000)
 ```
 
 ## Self-play

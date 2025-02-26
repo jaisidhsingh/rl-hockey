@@ -50,7 +50,7 @@
 #cnn_minst.py <model save path> <mnist data path>
 ####
 
-singularity run containers/container.sif python3 ~/projects/td3/td3.py
+singularity run containers/container.sif python3 ~/td3/td3.py
 
 echo DONE!
 

@@ -54,7 +54,7 @@ def self_play_train():
     # Self-play specific parameters
     parser.add_argument('--agent_name', type=str, default='sac_agent',
                         help='Base name for saved agent checkpoints (default: sac_agent)')
-    parser.add_argument('--save_opponent_interval', type=int, default=100_000,
+    parser.add_argument('--save_opponent_interval', type=int, default=50_000,
                         help='How often to save opponent versions')
     parser.add_argument('--win_ratio_threshold', type=float, default=0.8,
                         help='Minimum win ratio required to add new opponent')
@@ -75,9 +75,10 @@ def self_play_train():
     # Initialize environment
     env = h_env.HockeyEnv()
 
-    wandb.login()
+    wandb.login(key="06c432da22d5e9e35fddc4c3d5febab30de45a02", verify=True)
     wandb.init(
         project="rl-self-play",
+        entity="rl-project-2025",
         config={
             "algorithm": "SAC-SelfPlay",
             "game_mode": args.game_mode,

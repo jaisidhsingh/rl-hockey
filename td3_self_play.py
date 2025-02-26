@@ -60,9 +60,10 @@ def self_play_train():
     # Initialize environment
     env = h_env.HockeyEnv()
 
-    wandb.login()
+    wandb.login(key="06c432da22d5e9e35fddc4c3d5febab30de45a02", verify=True)
     wandb.init(
         project="rl-self-play",
+        entity="rl-project-2025",
         config={
             "algorithm": "TD3-SelfPlay",
             "batch_size": args.batch_size,

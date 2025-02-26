@@ -95,9 +95,10 @@ def train():
     np.random.seed(seed)
     
     # Initialize WandB
-    wandb.login()
+    wandb.login(key="06c432da22d5e9e35fddc4c3d5febab30de45a02", verify=True)
     wandb.init(
         project="rl-sac",
+        entity="rl-project-2025",
         config={
             "algorithm": "SAC",
             "policy": args.policy,

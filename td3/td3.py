@@ -251,8 +251,8 @@ def train():
     episode_timesteps = 0
     episode_num = 0
 
-    wandb.login()
-    wandb.init(project="rl-training", config={})
+    wandb.login(key="06c432da22d5e9e35fddc4c3d5febab30de45a02", verify=True)
+    wandb.init(project="rl-td3", entity="rl-project-2025", config={})
     state, _ = env.reset()
     done = False
     

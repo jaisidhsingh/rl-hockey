@@ -23,9 +23,9 @@ class AgentPicker:
         else:
             print("Loaded the following agents: ", self.agent_names)
     
-    def init_agents(self, player):
+    def init_agents(self, player, init_episodes=None):
         for idx, agent in enumerate(self.agents):
-            for i in range(self.init_episodes):
+            for i in range(init_episodes if init_episodes else self.init_episodes):
                 reward, result = play(player, agent)
                 self.update_agent_info(idx, result)
     

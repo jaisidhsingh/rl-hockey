@@ -10,8 +10,8 @@ up-utils:
 	scp -r "utils" "stud369@login2.tcml.uni-tuebingen.de:~/"
 
 up-self-play-sac:
-	scp -r "agents/sac_self_play_pool5_2" "stud369@login2.tcml.uni-tuebingen.de:~/agents"
-	scp -r "agents/sac_agent_spstrong.pt" "stud369@login2.tcml.uni-tuebingen.de:~/agents"
+	scp -r "agents/sac_self_play_pool5" "stud369@login2.tcml.uni-tuebingen.de:~/agents"
+	scp -r "agents/sac_agent_sp1M.pt" "stud369@login2.tcml.uni-tuebingen.de:~/agents"
 	scp -r "sac_self_play.py" "stud369@login2.tcml.uni-tuebingen.de:~"
 	scp -r "sac_self_play.sbatch" "stud369@login2.tcml.uni-tuebingen.de:~"
 
@@ -25,10 +25,10 @@ fetch:
 	scp -r "stud369@login2.tcml.uni-tuebingen.de:~/agents" tcml-agents
 
 fetch-self-play-sac:
-	scp -r "stud369@login2.tcml.uni-tuebingen.de:~/agents/sac_self_play_pool4_1" agents/td3_self_play_pool2_3
+	scp -r "stud369@login2.tcml.uni-tuebingen.de:~/agents/sac_self_play_pool5" agents/
 
 fetch-self-play-td3:
-	scp -r "stud369@login2.tcml.uni-tuebingen.de:~/agents/td3_self_play_pool2_3" agents
+	scp -r "stud369@login2.tcml.uni-tuebingen.de:~/agents/td3_self_play_pool2_3" agents/t
 
 local-self-play-sac:
 	python sac_self_play.py --n_step_td 3 --prioritized_replay --checkpoint_dir agents/sac_self_play_pool4_1 --initial_checkpoint agents/sac_agent_sp1M.pt --save_opponent_interval 50000
